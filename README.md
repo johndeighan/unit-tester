@@ -94,3 +94,12 @@ class CustomTester extends UnitTester
 custom = new CustomTester()
 custom.equal 99, " 3.14159 ", "3.9"
 ```
+
+Installing ava
+--------------
+Because I had problems with version 4, I specifically installed
+version 3 here via:
+
+```bash
+$ npm install ava@^3.x.x
+```

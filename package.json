@@ -1,0 +1,29 @@
+{
+	"name": "@jdeighan/unit-tester",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "A unit testing framework",
+	"exports": {
+		".": "./src/UnitTester.js",
+		"./package.json": "./package.json"
+	},
+	"scripts": {
+		"build": "cls && coffee -c .",
+		"test": "npm run build && ava ./test/*.test.js",
+		"publish": "npm publish --access=public"
+	},
+	"ava": {
+		"verbose": false
+	},
+	"keywords": [
+		"coffeescript",
+		"unit test"
+	],
+	"author": "John Deighan",
+	"license": "MIT",
+	"dependencies": {
+		"@jdeighan/coffee-utils": "^4.1.35",
+		"ava": "^4.0.1",
+		"coffeescript": "^2.6.1"
+	}
+}

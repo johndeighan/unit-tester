@@ -10,6 +10,15 @@ find failing tests.
 Simple usage
 ------------
 
+methods generally expect 3 arguments:
+
+- the test number
+- a value
+- an expected value
+
+in the case of methods **fails, succeeds, truthy, falsy**, there
+should be no expected value
+
 ```coffeescript
 simple = new UnitTester()
 
@@ -17,6 +26,18 @@ simple = new UnitTester()
 x = 23
 simple.equal 99, x, 23
 ```
+
+Available methods
+-----------------
+
+- **equal** - tests for deep equality
+- **notequal** - not **equal**
+- **fails** - value should be a function
+- **succeeds** - not **fails**
+- **truthy** - tests if value is true using JavaScript rules
+- **falsy** - not **truthy**
+- **same** - tests if value and expected are the same object
+- **different** - not **same**
 
 Testing string values
 ---------------------
@@ -54,10 +75,10 @@ Subclassing
 You may subclass **UnitTester** or **UnitTesterNoNorm**,
 in which case you can override the following methods:
 
-**initialize()** - will be executed before any tests are run
-**transformValue()** - transform the value in any way desired
-**transformExpected()** - transform the expected value in any way desired
-**isEmptyLine()** - define what an empty line is, e.g. allowing you
+- **initialize()** - will be executed before any tests are run
+- **transformValue()** - transform the value in any way desired
+- **transformExpected()** - transform the expected value in any way desired
+- **isEmptyLine()** - define what an empty line is, e.g. allowing you
 	to have comments removed from values and expected values.
 
 For example, this test will pass:

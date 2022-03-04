@@ -24,7 +24,6 @@ export class UnitTester
 				'truthy',
 				'falsy',
 				['same', 'is'],
-				['notsame', 'not'],
 				['different', 'not'],
 				]
 			if isArray(testDesc)

@@ -33,7 +33,7 @@ export var UnitTester = class UnitTester {
     this.source = source;
     this.hFound = {}; // used line numbers
     this.whichTest = 'deepEqual';
-    ref = ['truthy', 'falsy', ['same', 'is'], ['notsame', 'not'], ['different', 'not']];
+    ref = ['truthy', 'falsy', ['same', 'is'], ['different', 'not']];
     // --- We already have tests named:
     //        'equal', 'notequal', 'fails', 'succeeds'
     //     Add 4 more:

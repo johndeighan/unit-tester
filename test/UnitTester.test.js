@@ -37,8 +37,6 @@ simple.notequal(15, {
   b: 3
 });
 
-simple.notsame(17, [2, 3], [2, 3]);
-
 simple.different(18, [2, 3], [2, 3]);
 
 simple.fails(20, function() {

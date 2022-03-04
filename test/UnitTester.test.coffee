@@ -14,7 +14,6 @@ simple.notequal 13, [2,3], [2,4]
 simple.equal 14, {a:1, b:2}, {a:1, b:2}
 simple.notequal 15, {a:1, b:2}, {a:1, b:3}
 
-simple.notsame 17, [2,3], [2,3]
 simple.different 18, [2,3], [2,3]
 
 simple.fails 20, () -> throw "not OK"

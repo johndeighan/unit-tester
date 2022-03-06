@@ -58,12 +58,24 @@ export var UnitTester = class UnitTester {
 
   // ........................................................................
   test(lineNum, input, expected) {
-    var err, errMsg, got, ident, testLineNum, whichTest;
+    var doDebug, err, errMsg, got, ident, testLineNum, whichTest;
     assert(isInteger(lineNum) && (lineNum > 0), "UnitTester.test(): arg 1 must be a positive integer");
-    // --- temp backward compatibility - should use UNIT_TEST_LINENUM
-    testLineNum = process.env.UNIT_TEST_LINENUM || process.env.TEST_LINE_NUMBER;
-    if (testLineNum && (lineNum !== testLineNum)) {
-      return;
+    testLineNum = process.env.UNIT_TEST_LINENUM;
+    doDebug = process.env.UNIT_TEST_DEBUG;
+    if (doDebug) {
+      console.log(`UNIT_TEST_LINENUM = ${testLineNum}`);
+    }
+    if (testLineNum) {
+      if (lineNum === testLineNum) {
+        if (doDebug) {
+          console.log(`CUR_LINE_NUM = ${lineNum} - testing`);
+        }
+      } else {
+        if (doDebug) {
+          console.log(`CUR_LINE_NUM = ${lineNum} - skipping`);
+        }
+        return;
+      }
     }
     this.initialize();
     this.lineNum = lineNum; // set an property, for error reporting

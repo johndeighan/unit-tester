@@ -16,7 +16,6 @@ import {
 
 import {
   log,
-  currentLogger,
   setLogger
 } from '@jdeighan/coffee-utils/log';
 
@@ -186,8 +185,7 @@ export var UnitTester = class UnitTester {
     assert(expected == null, "UnitTester: fails doesn't allow expected");
     assert(isFunction(func), "UnitTester: fails requires a function");
     // --- disable logging
-    logger = currentLogger();
-    setLogger(function(x) {
+    logger = setLogger(function(x) {
       return pass;
     });
     try {

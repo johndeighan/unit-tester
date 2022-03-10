@@ -6,7 +6,7 @@ import {
 	assert, undef, pass, error, croak,
 	isString, isFunction, isInteger, isArray,
 	} from '@jdeighan/coffee-utils'
-import {log, currentLogger, setLogger} from '@jdeighan/coffee-utils/log'
+import {log, setLogger} from '@jdeighan/coffee-utils/log'
 import {debug, debugging, setDebugging} from '@jdeighan/coffee-utils/debug'
 
 # ---------------------------------------------------------------------------
@@ -169,8 +169,7 @@ export class UnitTester
 		assert isFunction(func), "UnitTester: fails requires a function"
 
 		# --- disable logging
-		logger = currentLogger()
-		setLogger (x) -> pass
+		logger = setLogger((x) -> pass)
 		try
 			func()
 			ok = true

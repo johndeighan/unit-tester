@@ -4,12 +4,12 @@ var nonorm, simple;
 
 import {
   UnitTester,
-  UnitTesterNoNorm
+  UnitTesterNorm
 } from '@jdeighan/unit-tester';
 
-simple = new UnitTester();
+simple = new UnitTesterNorm();
 
-nonorm = new UnitTesterNoNorm();
+nonorm = new UnitTester();
 
 simple.equal(8, 42, 42);
 
@@ -72,7 +72,7 @@ simple.truthy(23, 9999);
 (function() {
   var CustomTester, custom;
   // --- Value is transformed by converting to upper case
-  CustomTester = class CustomTester extends UnitTester {
+  CustomTester = class CustomTester extends UnitTesterNorm {
     transformValue(input) {
       return input.toUpperCase();
     }
@@ -86,7 +86,7 @@ simple.truthy(23, 9999);
 (function() {
   var CustomTester, custom;
   // --- Value is tripled
-  CustomTester = class CustomTester extends UnitTester {
+  CustomTester = class CustomTester extends UnitTesterNorm {
     transformValue(input) {
       return 3 * input;
     }
@@ -101,7 +101,7 @@ simple.truthy(23, 9999);
   var CustomTester, custom;
   // --- Transform both value and expected
   //     Parse string as a number, then floor() number
-  CustomTester = class CustomTester extends UnitTester {
+  CustomTester = class CustomTester extends UnitTesterNorm {
     transformValue(str) {
       return Math.floor(parseFloat(str));
     }
@@ -118,7 +118,7 @@ simple.truthy(23, 9999);
 (function() {
   var CustomTester, custom;
   // --- override initialize()
-  CustomTester = class CustomTester extends UnitTester {
+  CustomTester = class CustomTester extends UnitTesterNorm {
     initialize() {
       return this.h = {
         x: 0,

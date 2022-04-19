@@ -1,9 +1,9 @@
 # UnitTester.test.coffee
 
-import {UnitTester, UnitTesterNoNorm} from '@jdeighan/unit-tester'
+import {UnitTester, UnitTesterNorm} from '@jdeighan/unit-tester'
 
-simple = new UnitTester()
-nonorm = new UnitTesterNoNorm()
+simple = new UnitTesterNorm()
+nonorm = new UnitTester()
 
 simple.equal 8, 42, 42
 simple.equal 9, 40 + 2, 42
@@ -39,7 +39,7 @@ simple.truthy 23, 9999
 (() ->
 	# --- Value is transformed by converting to upper case
 
-	class CustomTester extends UnitTester
+	class CustomTester extends UnitTesterNorm
 		transformValue: (input) -> return input.toUpperCase()
 
 	custom = new CustomTester()
@@ -50,7 +50,7 @@ simple.truthy 23, 9999
 (() ->
 	# --- Value is tripled
 
-	class CustomTester extends UnitTester
+	class CustomTester extends UnitTesterNorm
 		transformValue: (input) -> return 3 * input
 
 	custom = new CustomTester()
@@ -62,7 +62,7 @@ simple.truthy 23, 9999
 	# --- Transform both value and expected
 	#     Parse string as a number, then floor() number
 
-	class CustomTester extends UnitTester
+	class CustomTester extends UnitTesterNorm
 		transformValue: (str) -> return Math.floor(parseFloat(str))
 		transformExpected: (str) -> return Math.floor(parseFloat(str))
 
@@ -73,7 +73,7 @@ simple.truthy 23, 9999
 (() ->
 	# --- override initialize()
 
-	class CustomTester extends UnitTester
+	class CustomTester extends UnitTesterNorm
 		initialize: () ->
 			@h = {
 				x: 0

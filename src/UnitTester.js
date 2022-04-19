@@ -25,6 +25,11 @@ import {
   setDebugging
 } from '@jdeighan/coffee-utils/debug';
 
+import {
+  normalize,
+  super_normalize
+} from '@jdeighan/unit-tester/utils';
+
 // ---------------------------------------------------------------------------
 export var UnitTester = class UnitTester {
   constructor(source = undef) {
@@ -146,25 +151,8 @@ export var UnitTester = class UnitTester {
   }
 
   // ........................................................................
-  normalize(input) {
-    var i, lLines, len, line, ref;
-    if (!isString(input)) {
-      return input;
-    }
-    // --- Remove leading and trailing whitespace
-    //     Convert all whitespace to single space character
-    //     Remove empty lines
-    lLines = [];
-    ref = input.split(/\r?\n/);
-    for (i = 0, len = ref.length; i < len; i++) {
-      line = ref[i];
-      line = line.trim();
-      line = line.replace(/\s+/g, ' ');
-      if (!this.isEmptyLine(line)) {
-        lLines.push(line);
-      }
-    }
-    return lLines.join('\n');
+  normalize(text) {
+    return text;
   }
 
   // ........................................................................
@@ -219,9 +207,17 @@ export var UnitTester = class UnitTester {
 };
 
 // ---------------------------------------------------------------------------
-export var UnitTesterNoNorm = class UnitTesterNoNorm extends UnitTester {
-  normalize(input) {
-    return input;
+export var UnitTesterNorm = class UnitTesterNorm extends UnitTester {
+  normalize(text) {
+    return normalize(text);
+  }
+
+};
+
+// ---------------------------------------------------------------------------
+export var UnitTesterSuperNorm = class UnitTesterSuperNorm extends UnitTester {
+  normalize(text) {
+    return super_normalize(text);
   }
 
 };

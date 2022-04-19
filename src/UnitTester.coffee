@@ -9,6 +9,8 @@ import {
 import {log, setLogger} from '@jdeighan/coffee-utils/log'
 import {debug, debugging, setDebugging} from '@jdeighan/coffee-utils/debug'
 
+import {normalize, super_normalize} from '@jdeighan/unit-tester/utils'
+
 # ---------------------------------------------------------------------------
 
 export class UnitTester
@@ -130,22 +132,9 @@ export class UnitTester
 
 	# ........................................................................
 
-	normalize: (input) ->
+	normalize: (text) ->
 
-		if ! isString(input)
-			return input
-
-		# --- Remove leading and trailing whitespace
-		#     Convert all whitespace to single space character
-		#     Remove empty lines
-
-		lLines = []
-		for line in input.split(/\r?\n/)
-			line = line.trim()
-			line = line.replace(/\s+/g, ' ')
-			if ! @isEmptyLine(line)
-				lLines.push line
-		return lLines.join('\n')
+		return text
 
 	# ........................................................................
 
@@ -197,8 +186,14 @@ export class UnitTester
 
 # ---------------------------------------------------------------------------
 
-export class UnitTesterNoNorm extends UnitTester
+export class UnitTesterNorm extends UnitTester
 
-	normalize: (input) ->
-		return input
+	normalize: (text) ->
+		return normalize(text)
 
+# ---------------------------------------------------------------------------
+
+export class UnitTesterSuperNorm extends UnitTester
+
+	normalize: (text) ->
+		return super_normalize(text)

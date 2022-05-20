@@ -66,7 +66,7 @@ export var UnitTester = class UnitTester {
     if (isString(lineNum)) {
       lineNum = parseInt(lineNum, 10);
     }
-    assert(isInteger(lineNum) && (lineNum > 0), "UnitTester.test(): arg 1 must be a positive integer");
+    assert(isInteger(lineNum) && (lineNum > 0), `UnitTester.test(): arg 1 ${lineNum} should be a positive integer`);
     testLineNum = parseInt(process.env.UNIT_TEST_LINENUM, 10);
     doDebug = process.env.UNIT_TEST_DEBUG;
     if (doDebug) {
@@ -117,6 +117,9 @@ export var UnitTester = class UnitTester {
     test(ident, function(t) {
       return t[whichTest](got, expected);
     });
+    if (doDebug) {
+      console.log(`Unit test ${lineNum} completed`);
+    }
   }
 
   // ........................................................................

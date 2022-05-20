@@ -67,10 +67,15 @@ export var UnitTester = class UnitTester {
       lineNum = parseInt(lineNum, 10);
     }
     assert(isInteger(lineNum) && (lineNum > 0), `UnitTester.test(): arg 1 ${lineNum} should be a positive integer`);
-    testLineNum = parseInt(process.env.UNIT_TEST_LINENUM, 10);
+    if (process.env.UNIT_TEST_LINENUM) {
+      testLineNum = parseInt(process.env.UNIT_TEST_LINENUM, 10);
+    }
     doDebug = process.env.UNIT_TEST_DEBUG;
     if (doDebug) {
-      console.log(`UNIT_TEST_LINENUM = ${testLineNum}`);
+      console.log(`UNIT_TEST_DEBUG = ${doDebug}`);
+      if (testLineNum) {
+        console.log(`UNIT_TEST_LINENUM = ${testLineNum}`);
+      }
     }
     if (testLineNum) {
       if (lineNum === testLineNum) {

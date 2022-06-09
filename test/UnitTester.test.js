@@ -37,35 +37,51 @@ simple.notequal(15, {
   b: 3
 });
 
-simple.different(18, [2, 3], [2, 3]);
+simple.different(17, [2, 3], [2, 3]);
 
-simple.fails(20, function() {
+simple.truthy(19, true);
+
+simple.falsy(20, false);
+
+simple.fails(22, function() {
   throw "not OK";
 });
 
-simple.succeeds(21, function() {
+simple.succeeds(23, function() {
   return 42;
 });
 
-simple.truthy(23, 99);
+simple.succeeds(25, function() {
+  return simple.truthy(999, false);
+});
 
-simple.falsy(24, 0);
+simple.succeeds(26, function() {
+  return simple.truthy(999, true);
+});
 
-simple.truthy(25, 'abc');
+simple.succeeds(27, function() {
+  return simple.falsy(999, false);
+});
 
-simple.falsy(26, '');
+simple.truthy(29, 99);
+
+simple.falsy(30, 0);
+
+simple.truthy(31, 'abc');
+
+simple.falsy(32, '');
 
 // --- Normalization:
-simple.equal(29, "  abc   xyz   ", "abc xyz");
+simple.equal(35, "  abc   xyz   ", "abc xyz");
 
-nonorm.notequal(30, "  abc   xyz   ", "abc xyz");
+nonorm.notequal(36, "  abc   xyz   ", "abc xyz");
 
-nonorm.notequal(31, "  abc xyz   ", "abc xyz");
+nonorm.notequal(37, "  abc xyz   ", "abc xyz");
 
-nonorm.notequal(32, "abc   xyz", "abc xyz");
+nonorm.notequal(38, "abc   xyz", "abc xyz");
 
 // --- Duplicate line numbers are not a problem
-simple.truthy(23, 9999);
+simple.truthy(41, 9999);
 
 // ---------------------------------------------------------------------------
 // --- Create custom unit testers
@@ -79,8 +95,8 @@ simple.truthy(23, 9999);
 
   };
   custom = new CustomTester();
-  custom.equal(47, 'abc', 'ABC');
-  return custom.equal(48, '  abc  ', 'ABC');
+  custom.equal(53, 'abc', 'ABC');
+  return custom.equal(54, '  abc  ', 'ABC');
 })();
 
 (function() {
@@ -93,8 +109,8 @@ simple.truthy(23, 9999);
 
   };
   custom = new CustomTester();
-  custom.equal(58, 2, 6);
-  return custom.equal(59, 5, 15);
+  custom.equal(64, 2, 6);
+  return custom.equal(65, 5, 15);
 })();
 
 (function() {
@@ -112,7 +128,7 @@ simple.truthy(23, 9999);
 
   };
   custom = new CustomTester();
-  return custom.equal(71, " 3.14159 ", "3.9");
+  return custom.equal(77, " 3.14159 ", "3.9");
 })();
 
 (function() {
@@ -133,5 +149,5 @@ simple.truthy(23, 9999);
 
   };
   custom = new CustomTester();
-  return custom.equal(87, 'meaningOfLife', 42);
+  return custom.equal(93, 'meaningOfLife', 42);
 })();

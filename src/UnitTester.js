@@ -37,17 +37,13 @@ export var UnitTester = class UnitTester {
     this.source = source;
     this.hFound = {}; // used line numbers
     this.whichTest = 'deepEqual';
-    ref = ['truthy', 'falsy', ['same', 'is'], ['different', 'not']];
+    ref = [['truthy', 'truthy'], ['falsy', 'falsy'], ['same', 'is'], ['different', 'not']];
     // --- We already have tests named:
     //        'equal', 'notequal', 'fails', 'succeeds'
     //     Add 4 more:
     for (i = 0, len = ref.length; i < len; i++) {
       testDesc = ref[i];
-      if (isArray(testDesc)) {
-        [myName, avaName] = testDesc;
-      } else {
-        myName = avaName = testDesc;
-      }
+      [myName, avaName] = testDesc;
       this.addTest(myName, function(lineNum, input, expected = undef) {
         this.whichTest = avaName;
         this.test(lineNum, input, expected);

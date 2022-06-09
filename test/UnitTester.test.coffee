@@ -14,24 +14,31 @@ simple.notequal 13, [2,3], [2,4]
 simple.equal 14, {a:1, b:2}, {a:1, b:2}
 simple.notequal 15, {a:1, b:2}, {a:1, b:3}
 
-simple.different 18, [2,3], [2,3]
+simple.different 17, [2,3], [2,3]
 
-simple.fails 20, () -> throw "not OK"
-simple.succeeds 21, () -> return 42
+simple.truthy 19, true
+simple.falsy 20, false
 
-simple.truthy 23, 99
-simple.falsy 24, 0
-simple.truthy 25, 'abc'
-simple.falsy 26, ''
+simple.fails 22, () -> throw "not OK"
+simple.succeeds 23, () -> return 42
+
+simple.succeeds 25, () -> simple.truthy(999, false)
+simple.succeeds 26, () -> simple.truthy(999, true)
+simple.succeeds 27, () -> simple.falsy(999, false)
+
+simple.truthy 29, 99
+simple.falsy 30, 0
+simple.truthy 31, 'abc'
+simple.falsy 32, ''
 
 # --- Normalization:
-simple.equal 29, "  abc   xyz   ", "abc xyz"
-nonorm.notequal 30, "  abc   xyz   ", "abc xyz"
-nonorm.notequal 31, "  abc xyz   ", "abc xyz"
-nonorm.notequal 32, "abc   xyz", "abc xyz"
+simple.equal 35, "  abc   xyz   ", "abc xyz"
+nonorm.notequal 36, "  abc   xyz   ", "abc xyz"
+nonorm.notequal 37, "  abc xyz   ", "abc xyz"
+nonorm.notequal 38, "abc   xyz", "abc xyz"
 
 # --- Duplicate line numbers are not a problem
-simple.truthy 23, 9999
+simple.truthy 41, 9999
 
 # ---------------------------------------------------------------------------
 # --- Create custom unit testers
@@ -43,8 +50,8 @@ simple.truthy 23, 9999
 		transformValue: (input) -> return input.toUpperCase()
 
 	custom = new CustomTester()
-	custom.equal 47, 'abc', 'ABC'
-	custom.equal 48, '  abc  ', 'ABC'
+	custom.equal 53, 'abc', 'ABC'
+	custom.equal 54, '  abc  ', 'ABC'
 	)()
 
 (() ->
@@ -54,8 +61,8 @@ simple.truthy 23, 9999
 		transformValue: (input) -> return 3 * input
 
 	custom = new CustomTester()
-	custom.equal 58, 2, 6
-	custom.equal 59, 5, 15
+	custom.equal 64, 2, 6
+	custom.equal 65, 5, 15
 	)()
 
 (() ->
@@ -67,7 +74,7 @@ simple.truthy 23, 9999
 		transformExpected: (str) -> return Math.floor(parseFloat(str))
 
 	custom = new CustomTester()
-	custom.equal 71, " 3.14159 ", "3.9"
+	custom.equal 77, " 3.14159 ", "3.9"
 	)()
 
 (() ->
@@ -83,5 +90,5 @@ simple.truthy 23, 9999
 		transformValue: (str) -> return @h[str]
 
 	custom = new CustomTester()
-	custom.equal 87, 'meaningOfLife', 42
+	custom.equal 93, 'meaningOfLife', 42
 	)()

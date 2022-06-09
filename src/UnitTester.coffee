@@ -16,6 +16,7 @@ import {normalize, super_normalize} from '@jdeighan/unit-tester/utils'
 export class UnitTester
 
 	constructor: (@source=undef) ->
+
 		@hFound = {}   # used line numbers
 		@whichTest = 'deepEqual'
 
@@ -23,15 +24,12 @@ export class UnitTester
 		#        'equal', 'notequal', 'fails', 'succeeds'
 		#     Add 4 more:
 		for testDesc in [
-				'truthy',
-				'falsy',
-				['same', 'is'],
-				['different', 'not'],
+				['truthy', 'truthy']
+				['falsy', 'falsy']
+				['same', 'is']
+				['different', 'not']
 				]
-			if isArray(testDesc)
-				[myName, avaName] = testDesc
-			else
-				myName = avaName = testDesc
+			[myName, avaName] = testDesc
 			@addTest myName, (lineNum, input, expected=undef) ->
 				@whichTest = avaName
 				@test lineNum, input, expected
@@ -40,6 +38,7 @@ export class UnitTester
 	# ........................................................................
 
 	addTest: (name, func) ->
+
 		this[name] = func
 		return
 
@@ -122,17 +121,20 @@ export class UnitTester
 	# ........................................................................
 
 	transformValue: (input) ->
+
 		return input
 
 	# ........................................................................
 
 	transformExpected: (input) ->
+
 		return input
 
 	# ........................................................................
 	# may override, e.g. to remove comments
 
 	isEmptyLine: (line) ->
+
 		return (line == '')
 
 	# ........................................................................
@@ -144,6 +146,7 @@ export class UnitTester
 	# ........................................................................
 
 	equal: (lineNum, input, expected) ->
+
 		@whichTest = 'deepEqual'
 		@test lineNum, input, expected
 		return
@@ -151,6 +154,7 @@ export class UnitTester
 	# ........................................................................
 
 	notequal: (lineNum, input, expected) ->
+
 		@whichTest = 'notDeepEqual'
 		@test lineNum, input, expected
 		return

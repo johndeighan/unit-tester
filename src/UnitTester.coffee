@@ -1,15 +1,25 @@
 # UnitTester.coffee
 
 import test from 'ava'
-
-import {
-	assert, undef, pass, error, croak,
-	isString, isFunction, isInteger, isArray,
-	} from '@jdeighan/coffee-utils'
-import {log, setLogger} from '@jdeighan/coffee-utils/log'
-import {debug, debugging, setDebugging} from '@jdeighan/coffee-utils/debug'
+import assert from 'assert'
 
 import {normalize, super_normalize} from '@jdeighan/unit-tester/utils'
+
+# --- These are currently part of coffee-utils
+#     But should probably be moved to a lower level library
+#     We don't want to import coffee-utils anymore, so for now
+#        we just define them here
+
+`const undef = undefined`
+isString = (x) -> typeof x == 'string' || x instanceof String
+isFunction = (x) -> typeof x == 'function'
+isInteger = (x) ->
+	if (typeof x == 'number')
+		return Number.isInteger(x)
+	else if (getClassName(x) == 'Number')
+		return Number.isInteger(x.valueOf())
+	else
+		return false
 
 # ---------------------------------------------------------------------------
 
@@ -75,17 +85,17 @@ export class UnitTester
 			got = @normalize(@transformValue(input))
 		catch err
 			errMsg = err.message || 'UNKNOWN ERROR'
-			log "got ERROR in unit test: #{errMsg}"
+			console.log "got ERROR in unit test: #{errMsg}"
 
 		expected = @normalize(@transformExpected(expected))
 
 		if process.env.UNIT_TEST_JUST_SHOW
-			log "line #{@lineNum}"
+			console.log "line #{@lineNum}"
 			if errMsg
-				log "GOT ERROR #{errMsg}"
+				console.log "GOT ERROR #{errMsg}"
 			else
-				log got, "GOT:"
-			log expected, "EXPECTED:"
+				console.log got, "GOT:"
+			console.log expected, "EXPECTED:"
 			return
 
 		# --- We need to save this here because in the tests themselves,
@@ -105,8 +115,6 @@ export class UnitTester
 	# ........................................................................
 
 	initialize: () ->     # override to do any initialization
-
-		pass
 
 	# ........................................................................
 
@@ -166,16 +174,13 @@ export class UnitTester
 		assert ! expected?, "UnitTester: fails doesn't allow expected"
 		assert isFunction(func), "UnitTester: fails requires a function"
 
-		# --- disable logging
-		logger = setLogger((x) -> pass)
 		try
 			func()
 			ok = true
 		catch err
 			ok = false
-		setLogger logger
 		@whichTest = 'falsy'
-		@test lineNum, ok, expected
+		@test lineNum, ok
 		return
 
 	# ........................................................................
@@ -184,13 +189,14 @@ export class UnitTester
 
 		assert ! expected?, "UnitTester: succeeds doesn't allow expected"
 		assert isFunction(func), "UnitTester: succeeds requires a function"
+
 		try
 			func()
 			ok = true
 		catch err
 			ok = false
 		@whichTest = 'truthy'
-		@test lineNum, ok, expected
+		@test lineNum, ok
 		return
 
 # ---------------------------------------------------------------------------

@@ -87,6 +87,17 @@ export class UnitTester
 			errMsg = err.message || 'UNKNOWN ERROR'
 			console.log "got ERROR in unit test: #{errMsg}"
 
+			# --- print a stack trace
+			stackTrace = new Error().stack
+			lCallers = getCallers(stackTrace, ['test'])
+
+			console.log '--------------------'
+			console.log 'JavaScript CALL STACK:'
+			for caller in lCallers
+				console.log "   #{caller}"
+			console.log '--------------------'
+			console.log "ERROR: #{errMsg} (in #{lCallers[0]}())"
+
 		expected = @normalize(@transformExpected(expected))
 
 		if process.env.UNIT_TEST_JUST_SHOW
@@ -198,6 +209,32 @@ export class UnitTester
 		@whichTest = 'truthy'
 		@test lineNum, ok
 		return
+
+# ---------------------------------------------------------------------------
+
+getCallers = (stackTrace, lExclude=[]) ->
+
+	iter = stackTrace.matchAll(///
+			at
+			\s+
+			(?:
+				async
+				\s+
+				)?
+			([^\s(]+)
+			///g)
+	if !iter
+		return ["<unknown>"]
+
+	lCallers = []
+	for lMatches from iter
+		[_, caller] = lMatches
+		if (caller.indexOf('file://') == 0)
+			break
+		if caller not in lExclude
+			lCallers.push caller
+
+	return lCallers
 
 # ---------------------------------------------------------------------------
 

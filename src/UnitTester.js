@@ -256,3 +256,6 @@ export var UnitTesterSuperNorm = class UnitTesterSuperNorm extends UnitTester {
   }
 
 };
+
+// ---------------------------------------------------------------------------
+export var simple = new UnitTester();

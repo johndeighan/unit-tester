@@ -249,3 +249,7 @@ export class UnitTesterSuperNorm extends UnitTester
 
 	normalize: (text) ->
 		return super_normalize(text)
+
+# ---------------------------------------------------------------------------
+
+export simple = new UnitTester()

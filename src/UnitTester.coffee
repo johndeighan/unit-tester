@@ -97,6 +97,7 @@ export class UnitTester
 				console.log "   #{caller}"
 			console.log '--------------------'
 			console.log "ERROR: #{errMsg} (in #{lCallers[0]}())"
+			throw err
 
 		expected = @normalize(@transformExpected(expected))
 

@@ -111,6 +111,7 @@ export var UnitTester = class UnitTester {
       }
       console.log('--------------------');
       console.log(`ERROR: ${errMsg} (in ${lCallers[0]}())`);
+      throw err;
     }
     expected = this.normalize(this.transformExpected(expected));
     if (process.env.UNIT_TEST_JUST_SHOW) {

@@ -173,6 +173,30 @@ export class UnitTester
 
 	# ........................................................................
 
+	hashhas: (lineNum, input, expected) ->
+
+		assert input instanceof Object, "value not a hash"
+		assert expected instanceof Object, "expected not a hash"
+		hNew = {}
+		for own key,value of expected
+			hNew[key] = input[key]
+		@whichTest = 'deepEqual'
+		@test lineNum, hNew, expected
+
+	# ........................................................................
+
+	nothashhas: (lineNum, input, expected) ->
+
+		assert input instanceof Object, "value not a hash"
+		assert expected instanceof Object, "expected not a hash"
+		hNew = {}
+		for own key,value of expected
+			hNew[key] = input[key]
+		@whichTest = 'notDeepEqual'
+		@test lineNum, hNew, expected
+
+	# ........................................................................
+
 	notequal: (lineNum, input, expected) ->
 
 		@whichTest = 'notDeepEqual'

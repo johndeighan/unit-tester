@@ -62,6 +62,11 @@ nonorm.notequal 60, "abc   xyz", "abc xyz"
 # --- Duplicate line numbers are not a problem
 simple.truthy 63, 9999
 
+# --- Test new testing method hashhas()
+simple.hashhas 66, {a:1, b:2}, {a:1}
+simple.nothashhas 67, {a:1, b:2}, {c:3}
+simple.nothashhas 66, {a:1, b:2}, {a:2}
+
 # ---------------------------------------------------------------------------
 # --- Create custom unit testers
 

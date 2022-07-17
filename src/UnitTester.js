@@ -44,7 +44,7 @@ export var UnitTester = class UnitTester {
     this.source = source;
     this.hFound = {}; // used line numbers
     this.whichTest = 'deepEqual';
-    ref = [['truthy', 'truthy'], ['falsy', 'falsy'], ['same', 'is'], ['different', 'not']];
+    ref = [['truthy', 'truthy'], ['falsy', 'falsy'], ['like', 'like'], ['same', 'is'], ['different', 'not']];
     // --- We already have tests named:
     //        'equal', 'notequal', 'fails', 'succeeds'
     //     Add 4 more:
@@ -178,12 +178,6 @@ export var UnitTester = class UnitTester {
   }
 
   // ........................................................................
-  equal(lineNum, input, expected) {
-    this.whichTest = 'deepEqual';
-    this.test(lineNum, input, expected);
-  }
-
-  // ........................................................................
   getBasicHash(input, expected) {
     var hNew, key, value;
     assert(input instanceof Object, "input not a hash");
@@ -233,6 +227,12 @@ export var UnitTester = class UnitTester {
     } else {
       throw new Error("Bad args");
     }
+  }
+
+  // ........................................................................
+  equal(lineNum, input, expected) {
+    this.whichTest = 'deepEqual';
+    this.test(lineNum, input, expected);
   }
 
   // ........................................................................

@@ -36,6 +36,7 @@ export class UnitTester
 		for testDesc in [
 				['truthy', 'truthy']
 				['falsy', 'falsy']
+				['like', 'like']
 				['same', 'is']
 				['different', 'not']
 				]
@@ -165,14 +166,6 @@ export class UnitTester
 
 	# ........................................................................
 
-	equal: (lineNum, input, expected) ->
-
-		@whichTest = 'deepEqual'
-		@test lineNum, input, expected
-		return
-
-	# ........................................................................
-
 	getBasicHash: (input, expected) ->
 
 		assert input instanceof Object, "input not a hash"
@@ -217,6 +210,14 @@ export class UnitTester
 			@test lineNum, @getBasicHash(input, expected), expected
 		else
 			throw new Error("Bad args")
+
+	# ........................................................................
+
+	equal: (lineNum, input, expected) ->
+
+		@whichTest = 'deepEqual'
+		@test lineNum, input, expected
+		return
 
 	# ........................................................................
 

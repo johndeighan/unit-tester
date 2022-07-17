@@ -204,7 +204,7 @@ export class UnitTester
 		else if (input instanceof Object) && (expected instanceof Object)
 			@test lineNum, @getBasicHash(input, expected), expected
 		else
-			croak "Bad args"
+			throw new Error("Bad args")
 
 	# ........................................................................
 
@@ -216,7 +216,7 @@ export class UnitTester
 		else if (input instanceof Object) && (expected instanceof Object)
 			@test lineNum, @getBasicHash(input, expected), expected
 		else
-			croak "Bad args"
+			throw new Error("Bad args")
 
 	# ........................................................................
 

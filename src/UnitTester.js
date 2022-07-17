@@ -219,7 +219,7 @@ export var UnitTester = class UnitTester {
     } else if ((input instanceof Object) && (expected instanceof Object)) {
       return this.test(lineNum, this.getBasicHash(input, expected), expected);
     } else {
-      return croak("Bad args");
+      throw new Error("Bad args");
     }
   }
 
@@ -231,7 +231,7 @@ export var UnitTester = class UnitTester {
     } else if ((input instanceof Object) && (expected instanceof Object)) {
       return this.test(lineNum, this.getBasicHash(input, expected), expected);
     } else {
-      return croak("Bad args");
+      throw new Error("Bad args");
     }
   }
 

@@ -127,12 +127,66 @@ simple.nothashhas(67, {
   c: 3
 });
 
-simple.nothashhas(66, {
+simple.nothashhas(68, {
   a: 1,
   b: 2
 }, {
   a: 2
 });
+
+simple.hashhas(70, [
+  {
+    a: 1,
+    b: 2
+  },
+  {
+    a: 3,
+    c: 5
+  }
+], [
+  {
+    a: 1
+  },
+  {
+    a: 3
+  }
+]);
+
+simple.nothashhas(71, [
+  {
+    a: 1,
+    b: 2
+  },
+  {
+    a: 3,
+    c: 5
+  }
+], [
+  {
+    a: 1
+  },
+  {
+    a: 4
+  }
+]);
+
+simple.nothashhas(72, [
+  {
+    a: 1,
+    b: 2
+  },
+  {
+    a: 3,
+    c: 5
+  }
+], [
+  {
+    a: 1
+  },
+  {
+    b: 3
+  }
+]);
 
 // ---------------------------------------------------------------------------
 // --- Create custom unit testers
@@ -146,8 +200,8 @@ simple.nothashhas(66, {
 
   };
   custom = new CustomTester();
-  custom.equal(75, 'abc', 'ABC');
-  return custom.equal(76, '  abc  ', 'ABC');
+  custom.equal(84, 'abc', 'ABC');
+  return custom.equal(85, '  abc  ', 'ABC');
 })();
 
 (function() {
@@ -160,8 +214,8 @@ simple.nothashhas(66, {
 
   };
   custom = new CustomTester();
-  custom.equal(86, 2, 6);
-  return custom.equal(87, 5, 15);
+  custom.equal(95, 2, 6);
+  return custom.equal(96, 5, 15);
 })();
 
 (function() {
@@ -179,7 +233,7 @@ simple.nothashhas(66, {
 
   };
   custom = new CustomTester();
-  return custom.equal(99, " 3.14159 ", "3.9");
+  return custom.equal(108, " 3.14159 ", "3.9");
 })();
 
 (function() {
@@ -200,5 +254,5 @@ simple.nothashhas(66, {
 
   };
   custom = new CustomTester();
-  return custom.equal(115, 'meaningOfLife', 42);
+  return custom.equal(124, 'meaningOfLife', 42);
 })();

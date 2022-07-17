@@ -40,7 +40,7 @@ isInteger = function(x) {
 // ---------------------------------------------------------------------------
 export var UnitTester = class UnitTester {
   constructor(source = undef) {
-    var avaName, i, len, myName, ref, testDesc;
+    var avaName, j, len, myName, ref, testDesc;
     this.source = source;
     this.hFound = {}; // used line numbers
     this.whichTest = 'deepEqual';
@@ -48,8 +48,8 @@ export var UnitTester = class UnitTester {
     // --- We already have tests named:
     //        'equal', 'notequal', 'fails', 'succeeds'
     //     Add 4 more:
-    for (i = 0, len = ref.length; i < len; i++) {
-      testDesc = ref[i];
+    for (j = 0, len = ref.length; j < len; j++) {
+      testDesc = ref[j];
       [myName, avaName] = testDesc;
       this.addTest(myName, function(lineNum, input, expected = undef) {
         this.whichTest = avaName;
@@ -65,7 +65,7 @@ export var UnitTester = class UnitTester {
 
   // ........................................................................
   test(lineNum, input, expected) {
-    var caller, doDebug, err, errMsg, got, i, ident, lCallers, len, stackTrace, testLineNum, whichTest;
+    var caller, doDebug, err, errMsg, got, ident, j, lCallers, len, stackTrace, testLineNum, whichTest;
     if (isString(lineNum)) {
       lineNum = parseInt(lineNum, 10);
     }
@@ -106,8 +106,8 @@ export var UnitTester = class UnitTester {
       lCallers = getCallers(stackTrace, ['test']);
       console.log('--------------------');
       console.log('JavaScript CALL STACK:');
-      for (i = 0, len = lCallers.length; i < len; i++) {
-        caller = lCallers[i];
+      for (j = 0, len = lCallers.length; j < len; j++) {
+        caller = lCallers[j];
         console.log(`   ${caller}`);
       }
       console.log('--------------------');
@@ -184,9 +184,9 @@ export var UnitTester = class UnitTester {
   }
 
   // ........................................................................
-  hashhas(lineNum, input, expected) {
+  getBasicHash(input, expected) {
     var hNew, key, value;
-    assert(input instanceof Object, "value not a hash");
+    assert(input instanceof Object, "input not a hash");
     assert(expected instanceof Object, "expected not a hash");
     hNew = {};
     for (key in expected) {
@@ -194,23 +194,45 @@ export var UnitTester = class UnitTester {
       value = expected[key];
       hNew[key] = input[key];
     }
+    return hNew;
+  }
+
+  // ........................................................................
+  getBasicArray(input, expected) {
+    var h, hCompare, i, j, lNew, len;
+    assert(Array.isArray(input), "input not an array");
+    assert(Array.isArray(expected), "expected not an array");
+    hCompare = expected[0];
+    lNew = [];
+    for (i = j = 0, len = input.length; j < len; i = ++j) {
+      h = input[i];
+      lNew.push(this.getBasicHash(h, hCompare));
+    }
+    return lNew;
+  }
+
+  // ........................................................................
+  hashhas(lineNum, input, expected) {
     this.whichTest = 'deepEqual';
-    return this.test(lineNum, hNew, expected);
+    if (Array.isArray(input) && Array.isArray(expected)) {
+      return this.test(lineNum, this.getBasicArray(input, expected), expected);
+    } else if ((input instanceof Object) && (expected instanceof Object)) {
+      return this.test(lineNum, this.getBasicHash(input, expected), expected);
+    } else {
+      return croak("Bad args");
+    }
   }
 
   // ........................................................................
   nothashhas(lineNum, input, expected) {
-    var hNew, key, value;
-    assert(input instanceof Object, "value not a hash");
-    assert(expected instanceof Object, "expected not a hash");
-    hNew = {};
-    for (key in expected) {
-      if (!hasProp.call(expected, key)) continue;
-      value = expected[key];
-      hNew[key] = input[key];
-    }
     this.whichTest = 'notDeepEqual';
-    return this.test(lineNum, hNew, expected);
+    if (Array.isArray(input) && Array.isArray(expected)) {
+      return this.test(lineNum, this.getBasicArray(input, expected), expected);
+    } else if ((input instanceof Object) && (expected instanceof Object)) {
+      return this.test(lineNum, this.getBasicHash(input, expected), expected);
+    } else {
+      return croak("Bad args");
+    }
   }
 
   // ........................................................................

@@ -65,7 +65,11 @@ simple.truthy 63, 9999
 # --- Test new testing method hashhas()
 simple.hashhas 66, {a:1, b:2}, {a:1}
 simple.nothashhas 67, {a:1, b:2}, {c:3}
-simple.nothashhas 66, {a:1, b:2}, {a:2}
+simple.nothashhas 68, {a:1, b:2}, {a:2}
+
+simple.hashhas 70, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:3}]
+simple.nothashhas 71, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:4}]
+simple.nothashhas 72, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {b:3}]
 
 # ---------------------------------------------------------------------------
 # --- Create custom unit testers
@@ -77,8 +81,8 @@ simple.nothashhas 66, {a:1, b:2}, {a:2}
 		transformValue: (input) -> return input.toUpperCase()
 
 	custom = new CustomTester()
-	custom.equal 75, 'abc', 'ABC'
-	custom.equal 76, '  abc  ', 'ABC'
+	custom.equal 84, 'abc', 'ABC'
+	custom.equal 85, '  abc  ', 'ABC'
 	)()
 
 (() ->
@@ -88,8 +92,8 @@ simple.nothashhas 66, {a:1, b:2}, {a:2}
 		transformValue: (input) -> return 3 * input
 
 	custom = new CustomTester()
-	custom.equal 86, 2, 6
-	custom.equal 87, 5, 15
+	custom.equal 95, 2, 6
+	custom.equal 96, 5, 15
 	)()
 
 (() ->
@@ -101,7 +105,7 @@ simple.nothashhas 66, {a:1, b:2}, {a:2}
 		transformExpected: (str) -> return Math.floor(parseFloat(str))
 
 	custom = new CustomTester()
-	custom.equal 99, " 3.14159 ", "3.9"
+	custom.equal 108, " 3.14159 ", "3.9"
 	)()
 
 (() ->
@@ -117,5 +121,5 @@ simple.nothashhas 66, {a:1, b:2}, {a:2}
 		transformValue: (str) -> return @h[str]
 
 	custom = new CustomTester()
-	custom.equal 115, 'meaningOfLife', 42
+	custom.equal 124, 'meaningOfLife', 42
 	)()

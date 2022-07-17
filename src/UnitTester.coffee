@@ -173,27 +173,50 @@ export class UnitTester
 
 	# ........................................................................
 
-	hashhas: (lineNum, input, expected) ->
+	getBasicHash: (input, expected) ->
 
-		assert input instanceof Object, "value not a hash"
+		assert input instanceof Object, "input not a hash"
 		assert expected instanceof Object, "expected not a hash"
 		hNew = {}
 		for own key,value of expected
 			hNew[key] = input[key]
+		return hNew
+
+	# ........................................................................
+
+	getBasicArray: (input, expected) ->
+
+		assert Array.isArray(input), "input not an array"
+		assert Array.isArray(expected), "expected not an array"
+		hCompare = expected[0]
+		lNew = []
+		for h,i in input
+			lNew.push @getBasicHash(h, hCompare)
+		return lNew
+
+	# ........................................................................
+
+	hashhas: (lineNum, input, expected) ->
+
 		@whichTest = 'deepEqual'
-		@test lineNum, hNew, expected
+		if Array.isArray(input) && Array.isArray(expected)
+			@test lineNum, @getBasicArray(input, expected), expected
+		else if (input instanceof Object) && (expected instanceof Object)
+			@test lineNum, @getBasicHash(input, expected), expected
+		else
+			croak "Bad args"
 
 	# ........................................................................
 
 	nothashhas: (lineNum, input, expected) ->
 
-		assert input instanceof Object, "value not a hash"
-		assert expected instanceof Object, "expected not a hash"
-		hNew = {}
-		for own key,value of expected
-			hNew[key] = input[key]
 		@whichTest = 'notDeepEqual'
-		@test lineNum, hNew, expected
+		if Array.isArray(input) && Array.isArray(expected)
+			@test lineNum, @getBasicArray(input, expected), expected
+		else if (input instanceof Object) && (expected instanceof Object)
+			@test lineNum, @getBasicHash(input, expected), expected
+		else
+			croak "Bad args"
 
 	# ........................................................................
 

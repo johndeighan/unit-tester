@@ -196,7 +196,7 @@ export class UnitTester
 
 	# ........................................................................
 
-	hashhas: (lineNum, input, expected) ->
+	hashwith: (lineNum, input, expected) ->
 
 		@whichTest = 'deepEqual'
 		if Array.isArray(input) && Array.isArray(expected)
@@ -208,7 +208,7 @@ export class UnitTester
 
 	# ........................................................................
 
-	nothashhas: (lineNum, input, expected) ->
+	nothashwith: (lineNum, input, expected) ->
 
 		@whichTest = 'notDeepEqual'
 		if Array.isArray(input) && Array.isArray(expected)

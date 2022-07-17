@@ -212,7 +212,7 @@ export var UnitTester = class UnitTester {
   }
 
   // ........................................................................
-  hashhas(lineNum, input, expected) {
+  hashwith(lineNum, input, expected) {
     this.whichTest = 'deepEqual';
     if (Array.isArray(input) && Array.isArray(expected)) {
       return this.test(lineNum, this.getBasicArray(input, expected), expected);
@@ -224,7 +224,7 @@ export var UnitTester = class UnitTester {
   }
 
   // ........................................................................
-  nothashhas(lineNum, input, expected) {
+  nothashwith(lineNum, input, expected) {
     this.whichTest = 'notDeepEqual';
     if (Array.isArray(input) && Array.isArray(expected)) {
       return this.test(lineNum, this.getBasicArray(input, expected), expected);

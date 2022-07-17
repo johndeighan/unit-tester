@@ -112,29 +112,29 @@ nonorm.notequal(60, "abc   xyz", "abc xyz");
 // --- Duplicate line numbers are not a problem
 simple.truthy(63, 9999);
 
-// --- Test new testing method hashhas()
-simple.hashhas(66, {
+// --- Test new testing method hashwith()
+simple.hashwith(66, {
   a: 1,
   b: 2
 }, {
   a: 1
 });
 
-simple.nothashhas(67, {
+simple.nothashwith(67, {
   a: 1,
   b: 2
 }, {
   c: 3
 });
 
-simple.nothashhas(68, {
+simple.nothashwith(68, {
   a: 1,
   b: 2
 }, {
   a: 2
 });
 
-simple.hashhas(70, [
+simple.hashwith(70, [
   {
     a: 1,
     b: 2
@@ -152,7 +152,7 @@ simple.hashhas(70, [
   }
 ]);
 
-simple.nothashhas(71, [
+simple.nothashwith(71, [
   {
     a: 1,
     b: 2
@@ -170,7 +170,7 @@ simple.nothashhas(71, [
   }
 ]);
 
-simple.nothashhas(72, [
+simple.nothashwith(72, [
   {
     a: 1,
     b: 2

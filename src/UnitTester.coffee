@@ -37,6 +37,8 @@ export class UnitTester
 				['truthy', 'truthy']
 				['falsy', 'falsy']
 				['like', 'like']
+				['is', 'is']
+				['not', 'not']
 				['same', 'is']
 				['different', 'not']
 				]

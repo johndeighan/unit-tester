@@ -88,7 +88,7 @@ export class UnitTester
 			got = @normalize(@transformValue(input))
 		catch err
 			errMsg = err.message || 'UNKNOWN ERROR'
-			console.log "got ERROR in unit test: #{errMsg}"
+			console.log "got ERROR in unit test #{lineNum}: #{errMsg}"
 
 			# --- print a stack trace
 			stackTrace = new Error().stack
@@ -107,7 +107,7 @@ export class UnitTester
 		if process.env.UNIT_TEST_JUST_SHOW
 			console.log "line #{@lineNum}"
 			if errMsg
-				console.log "GOT ERROR #{errMsg}"
+				console.log "GOT ERROR in unit test #{lineNum}: #{errMsg}"
 			else
 				console.log got, "GOT:"
 			console.log expected, "EXPECTED:"

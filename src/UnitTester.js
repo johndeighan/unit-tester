@@ -100,7 +100,7 @@ export var UnitTester = class UnitTester {
     } catch (error) {
       err = error;
       errMsg = err.message || 'UNKNOWN ERROR';
-      console.log(`got ERROR in unit test: ${errMsg}`);
+      console.log(`got ERROR in unit test ${lineNum}: ${errMsg}`);
       // --- print a stack trace
       stackTrace = new Error().stack;
       lCallers = getCallers(stackTrace, ['test']);
@@ -118,7 +118,7 @@ export var UnitTester = class UnitTester {
     if (process.env.UNIT_TEST_JUST_SHOW) {
       console.log(`line ${this.lineNum}`);
       if (errMsg) {
-        console.log(`GOT ERROR ${errMsg}`);
+        console.log(`GOT ERROR in unit test ${lineNum}: ${errMsg}`);
       } else {
         console.log(got, "GOT:");
       }

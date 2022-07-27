@@ -1,6 +1,87 @@
 # utils.coffee
 
-import assert from 'assert'
+export doHaltOnError = false
+
+# ---------------------------------------------------------------------------
+
+export haltOnError = () ->
+
+	doHaltOnError = true
+
+# ---------------------------------------------------------------------------
+#   error - throw an error
+
+export error = (message) ->
+
+	if doHaltOnError
+		console.trace("ERROR: #{message}")
+		process.exit()
+	throw new Error(message)
+
+# ---------------------------------------------------------------------------
+
+getCallers = (stackTrace, lExclude=[]) ->
+
+	iter = stackTrace.matchAll(///
+			at
+			\s+
+			(?:
+				async
+				\s+
+				)?
+			([^\s(]+)
+			///g)
+	if !iter
+		return ["<unknown>"]
+
+	lCallers = []
+	for lMatches from iter
+		[_, caller] = lMatches
+		if (caller.indexOf('file://') == 0)
+			break
+		if caller not in lExclude
+			lCallers.push caller
+
+	return lCallers
+
+# ---------------------------------------------------------------------------
+#   assert - mimic nodejs's assert
+#   return true so we can use it in boolean expressions
+
+export assert = (cond, msg) ->
+
+	if ! cond
+		stackTrace = new Error().stack
+		lCallers = getCallers(stackTrace, ['assert'])
+
+		console.log '--------------------'
+		console.log 'JavaScript CALL STACK:'
+		for caller in lCallers
+			console.log "   #{caller}"
+		console.log '--------------------'
+		console.log "ERROR: #{msg} (in #{lCallers[0]}())"
+		if doHaltOnError
+			process.exit()
+		error msg
+	return true
+
+# ---------------------------------------------------------------------------
+#   croak - throws an error after possibly printing useful info
+
+export croak = (err, label, obj) ->
+
+	if (typeof err == 'string') || (err instanceof String)
+		curmsg = err
+	else
+		curmsg = err.message
+	newmsg = """
+			ERROR (croak): #{curmsg}
+			#{label}:
+			#{JSON.stringify(obj)}
+			"""
+
+	# --- re-throw the error
+	throw new Error(newmsg)
 
 # ---------------------------------------------------------------------------
 

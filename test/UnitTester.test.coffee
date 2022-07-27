@@ -5,71 +5,75 @@ import {UnitTester, UnitTesterNorm, simple} from '@jdeighan/unit-tester'
 nonorm = new UnitTester()
 norm = new UnitTesterNorm()
 
-simple.equal 7, 42, 42
-simple.equal 8, 40 + 2, 42
-simple.notequal 9, 40 + 3, 42
+simple.equal 8, 42, 42
+simple.equal 9, 40 + 2, 42
+simple.notequal 10, 40 + 3, 42
 
-simple.equal 11, [2,3], [2,3]
-simple.notequal 12, [2,3], [2,4]
-simple.equal 13, {a:1, b:2}, {a:1, b:2}
-simple.notequal 14, {a:1, b:2}, {a:1, b:3}
+simple.equal "line 12", 42, 42
+simple.equal "line 13", 40 + 2, 42
+simple.notequal "line 14", 40 + 3, 42
 
-simple.different 16, [2,3], [2,3]
+simple.equal 16, [2,3], [2,3]
+simple.notequal 17, [2,3], [2,4]
+simple.equal 18, {a:1, b:2}, {a:1, b:2}
+simple.notequal 19, {a:1, b:2}, {a:1, b:3}
 
-simple.fails 18,    () -> throw "not OK"
-simple.succeeds 19, () -> return 42
+simple.different 21, [2,3], [2,3]
 
-simple.succeeds 21, () -> simple.truthy(997, false)
-simple.succeeds 22, () -> simple.truthy(998, true)
-simple.succeeds 23, () -> simple.falsy(999, false)
+simple.fails 23,    () -> throw "not OK"
+simple.succeeds 24, () -> return 42
 
-simple.truthy 25, true
-simple.falsy 26, false
+simple.succeeds 26, () -> simple.truthy(997, false)
+simple.succeeds 27, () -> simple.truthy(998, true)
+simple.succeeds 28, () -> simple.falsy(999, false)
+
+simple.truthy 30, true
+simple.falsy 31, false
 
 result = true
-simple.truthy 29, result
+simple.truthy 34, result
 
 result = false
-simple.falsy 32, result
+simple.falsy 37, result
 
-simple.truthy 34, 99
-simple.falsy 35, 0
-simple.truthy 36, 'abc'
-simple.falsy 37, ''
+simple.truthy 39, 99
+simple.falsy 40, 0
+simple.truthy 41, 'abc'
+simple.falsy 42, ''
 
 # --- with nonorm
 
-nonorm.truthy 41, true
-nonorm.falsy 42, false
+nonorm.truthy 46, true
+nonorm.falsy 47, false
 
 result = true
-nonorm.truthy 45, result
+nonorm.truthy 50, result
 
 result = false
-nonorm.falsy 48, result
+nonorm.falsy 53, result
 
-nonorm.truthy 50, 99
-nonorm.falsy 51, 0
-nonorm.truthy 52, 'abc'
-nonorm.falsy 53, ''
+nonorm.truthy 55, 99
+nonorm.falsy 56, 0
+nonorm.truthy 57, 'abc'
+nonorm.falsy 58, ''
 
 # --- Normalization:
-norm.equal 56, "  abc   xyz   ", "abc xyz"
-nonorm.notequal 57, "  abc   xyz   ", "abc xyz"
-nonorm.notequal 58, "  abc xyz   ", "abc xyz"
-nonorm.notequal 59, "abc   xyz", "abc xyz"
+norm.equal 61, "  abc   xyz   ", "abc xyz"
+nonorm.notequal 62, "  abc   xyz   ", "abc xyz"
+nonorm.notequal 63, "  abc xyz   ", "abc xyz"
+nonorm.notequal 64, "abc   xyz", "abc xyz"
 
 # --- Duplicate line numbers are not a problem
-simple.truthy 62, 9999
+simple.truthy 67, 9999
 
 # --- Test new testing method hashwith()
-simple.hashwith 65, {a:1, b:2}, {a:1}
-simple.nothashwith 66, {a:1, b:2}, {c:3}
-simple.nothashwith 67, {a:1, b:2}, {a:2}
+simple.hashwith 70, {a:1, b:2}, {a:1}
+simple.nothashwith 71, {a:1, b:2}, {c:3}
+simple.nothashwith 72, {a:1, b:2}, {a:2}
 
-simple.hashwith 69, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:3}]
-simple.nothashwith 70, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:4}]
-simple.nothashwith 71, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {b:3}]
+simple.hashwith 74, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:3}]
+simple.nothashwith 75, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:4}]
+simple.nothashwith 76, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {b:3}]
 
 # ---------------------------------------------------------------------------
 # --- Create custom unit testers
@@ -81,8 +85,8 @@ simple.nothashwith 71, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {b:3}]
 		transformValue: (input) -> return input.toUpperCase()
 
 	custom = new CustomTester()
-	custom.equal 83, 'abc', 'ABC'
-	custom.equal 84, '  abc  ', 'ABC'
+	custom.equal 88, 'abc', 'ABC'
+	custom.equal 89, '  abc  ', 'ABC'
 	)()
 
 (() ->
@@ -92,8 +96,8 @@ simple.nothashwith 71, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {b:3}]
 		transformValue: (input) -> return 3 * input
 
 	custom = new CustomTester()
-	custom.equal 94, 2, 6
-	custom.equal 95, 5, 15
+	custom.equal 99, 2, 6
+	custom.equal 100, 5, 15
 	)()
 
 (() ->
@@ -105,7 +109,7 @@ simple.nothashwith 71, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {b:3}]
 		transformExpected: (str) -> return Math.floor(parseFloat(str))
 
 	custom = new CustomTester()
-	custom.equal 107, " 3.14159 ", "3.9"
+	custom.equal 112, " 3.14159 ", "3.9"
 	)()
 
 (() ->
@@ -121,5 +125,5 @@ simple.nothashwith 71, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {b:3}]
 		transformValue: (str) -> return @h[str]
 
 	custom = new CustomTester()
-	custom.equal 123, 'meaningOfLife', 42
+	custom.equal 128, 'meaningOfLife', 42
 	)()

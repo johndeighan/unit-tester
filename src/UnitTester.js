@@ -20,7 +20,7 @@ import {
 const undef = undefined;
 
 isString = function(x) {
-  return typeof x === 'string' || x instanceof String;
+  return (typeof x === 'string') || (x instanceof String);
 };
 
 isFunction = function(x) {
@@ -44,6 +44,7 @@ export var UnitTester = class UnitTester {
     this.source = source;
     this.hFound = {}; // used line numbers
     this.whichTest = 'deepEqual';
+    this.label = 'unknown';
     ref = [['truthy', 'truthy'], ['falsy', 'falsy'], ['like', 'like'], ['is', 'is'], ['not', 'not'], ['same', 'is'], ['different', 'not']];
     // --- We already have tests named:
     //        'equal', 'notequal', 'fails', 'succeeds'
@@ -65,10 +66,17 @@ export var UnitTester = class UnitTester {
 
   // ........................................................................
   test(lineNum, input, expected) {
-    var caller, doDebug, err, errMsg, got, ident, j, lCallers, len, stackTrace, testLineNum, whichTest;
+    var caller, doDebug, err, errMsg, got, ident, j, lCallers, lMatches, len, stackTrace, testLineNum, whichTest;
     if (isString(lineNum)) {
-      lineNum = parseInt(lineNum, 10);
+      if (lMatches = lineNum.match(/(\d+)$/)) {
+        lineNum = parseInt(lMatches[1], 10);
+      } else {
+        throw new Error(`test(): Invalid line number: ${lineNum}`);
+      }
+    } else if (!isInteger(lineNum)) {
+      throw new Error(`test(): Invalid line number: ${lineNum}`);
     }
+    this.label = `line ${lineNum}`;
     assert(isInteger(lineNum) && (lineNum > 0), `UnitTester.test(): arg 1 ${lineNum} should be a positive integer`);
     if (process.env.UNIT_TEST_LINENUM) {
       testLineNum = parseInt(process.env.UNIT_TEST_LINENUM, 10);
@@ -116,7 +124,7 @@ export var UnitTester = class UnitTester {
     }
     expected = this.normalize(this.transformExpected(expected));
     if (process.env.UNIT_TEST_JUST_SHOW) {
-      console.log(`line ${this.lineNum}`);
+      console.log(this.label);
       if (errMsg) {
         console.log(`GOT ERROR in unit test ${lineNum}: ${errMsg}`);
       } else {
@@ -130,7 +138,7 @@ export var UnitTester = class UnitTester {
     whichTest = this.whichTest;
     // --- test names must be unique, getLineNum() ensures that
     lineNum = this.getLineNum(lineNum);
-    ident = `line ${lineNum}`;
+    ident = this.label;
     if (this.source) {
       ident += ` in ${this.source}`;
     }

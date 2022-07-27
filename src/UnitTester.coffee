@@ -11,7 +11,7 @@ import {normalize, super_normalize} from '@jdeighan/unit-tester/utils'
 #        we just define them here
 
 `const undef = undefined`
-isString = (x) -> typeof x == 'string' || x instanceof String
+isString = (x) -> (typeof x == 'string') || (x instanceof String)
 isFunction = (x) -> typeof x == 'function'
 isInteger = (x) ->
 	if (typeof x == 'number')
@@ -29,6 +29,7 @@ export class UnitTester
 
 		@hFound = {}   # used line numbers
 		@whichTest = 'deepEqual'
+		@label = 'unknown'
 
 		# --- We already have tests named:
 		#        'equal', 'notequal', 'fails', 'succeeds'
@@ -60,7 +61,14 @@ export class UnitTester
 	test: (lineNum, input, expected) ->
 
 		if isString(lineNum)
-			lineNum = parseInt(lineNum, 10)
+			if lMatches = lineNum.match(/(\d+)$/)
+				lineNum = parseInt(lMatches[1], 10)
+			else
+				throw new Error("test(): Invalid line number: #{lineNum}")
+		else if ! isInteger(lineNum)
+			throw new Error("test(): Invalid line number: #{lineNum}")
+		@label = "line #{lineNum}"
+
 		assert isInteger(lineNum) && (lineNum > 0),
 			"UnitTester.test(): arg 1 #{lineNum} should be a positive integer"
 
@@ -105,7 +113,7 @@ export class UnitTester
 		expected = @normalize(@transformExpected(expected))
 
 		if process.env.UNIT_TEST_JUST_SHOW
-			console.log "line #{@lineNum}"
+			console.log @label
 			if errMsg
 				console.log "GOT ERROR in unit test #{lineNum}: #{errMsg}"
 			else
@@ -119,7 +127,7 @@ export class UnitTester
 
 		# --- test names must be unique, getLineNum() ensures that
 		lineNum = @getLineNum(lineNum)
-		ident = "line #{lineNum}"
+		ident = @label
 		if @source
 			ident += " in #{@source}"
 		test ident, (t) -> t[whichTest](got, expected)

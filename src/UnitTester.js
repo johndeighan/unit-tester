@@ -10,7 +10,9 @@ import assert from 'assert';
 
 import {
   normalize,
-  super_normalize
+  super_normalize,
+  disableErrorLogging,
+  enableErrorLogging
 } from '@jdeighan/unit-tester/utils';
 
 // --- These are currently part of coffee-utils
@@ -255,12 +257,14 @@ export var UnitTester = class UnitTester {
     assert(expected == null, "UnitTester: fails doesn't allow expected");
     assert(isFunction(func), "UnitTester: fails requires a function");
     try {
+      disableErrorLogging();
       func();
       ok = true;
     } catch (error) {
       err = error;
       ok = false;
     }
+    enableErrorLogging();
     this.whichTest = 'falsy';
     this.test(lineNum, ok);
   }

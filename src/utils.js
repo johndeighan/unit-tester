@@ -5,9 +5,21 @@ var getCallers,
 
 export var doHaltOnError = false;
 
+export var doLog = true;
+
 // ---------------------------------------------------------------------------
 export var haltOnError = function() {
   return doHaltOnError = true;
+};
+
+// ---------------------------------------------------------------------------
+export var disableErrorLogging = function() {
+  return doLog = false;
+};
+
+// ---------------------------------------------------------------------------
+export var enableErrorLogging = function() {
+  return doLog = true;
 };
 
 // ---------------------------------------------------------------------------
@@ -46,16 +58,18 @@ getCallers = function(stackTrace, lExclude = []) {
 export var assert = function(cond, msg) {
   var caller, i, lCallers, len, stackTrace;
   if (!cond) {
-    stackTrace = new Error().stack;
-    lCallers = getCallers(stackTrace, ['assert']);
-    console.log('--------------------');
-    console.log('JavaScript CALL STACK:');
-    for (i = 0, len = lCallers.length; i < len; i++) {
-      caller = lCallers[i];
-      console.log(`   ${caller}`);
+    if (doLog) {
+      stackTrace = new Error().stack;
+      lCallers = getCallers(stackTrace, ['assert']);
+      console.log('--------------------');
+      console.log('JavaScript CALL STACK:');
+      for (i = 0, len = lCallers.length; i < len; i++) {
+        caller = lCallers[i];
+        console.log(`   ${caller}`);
+      }
+      console.log('--------------------');
+      console.log(`ERROR: ${msg} (in ${lCallers[0]}())`);
     }
-    console.log('--------------------');
-    console.log(`ERROR: ${msg} (in ${lCallers[0]}())`);
     if (doHaltOnError) {
       process.exit();
     }

@@ -3,7 +3,9 @@
 import test from 'ava'
 import assert from 'assert'
 
-import {normalize, super_normalize} from '@jdeighan/unit-tester/utils'
+import {
+	normalize, super_normalize, disableErrorLogging, enableErrorLogging,
+	} from '@jdeighan/unit-tester/utils'
 
 # --- These are currently part of coffee-utils
 #     But should probably be moved to a lower level library
@@ -245,10 +247,12 @@ export class UnitTester
 		assert isFunction(func), "UnitTester: fails requires a function"
 
 		try
+			disableErrorLogging()
 			func()
 			ok = true
 		catch err
 			ok = false
+		enableErrorLogging()
 		@whichTest = 'falsy'
 		@test lineNum, ok
 		return

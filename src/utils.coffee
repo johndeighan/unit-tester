@@ -1,12 +1,25 @@
 # utils.coffee
 
 export doHaltOnError = false
+export doLog = true
 
 # ---------------------------------------------------------------------------
 
 export haltOnError = () ->
 
 	doHaltOnError = true
+
+# ---------------------------------------------------------------------------
+
+export disableErrorLogging = () ->
+
+	doLog = false
+
+# ---------------------------------------------------------------------------
+
+export enableErrorLogging = () ->
+
+	doLog = true
 
 # ---------------------------------------------------------------------------
 #   error - throw an error
@@ -51,15 +64,16 @@ getCallers = (stackTrace, lExclude=[]) ->
 export assert = (cond, msg) ->
 
 	if ! cond
-		stackTrace = new Error().stack
-		lCallers = getCallers(stackTrace, ['assert'])
+		if doLog
+			stackTrace = new Error().stack
+			lCallers = getCallers(stackTrace, ['assert'])
 
-		console.log '--------------------'
-		console.log 'JavaScript CALL STACK:'
-		for caller in lCallers
-			console.log "   #{caller}"
-		console.log '--------------------'
-		console.log "ERROR: #{msg} (in #{lCallers[0]}())"
+			console.log '--------------------'
+			console.log 'JavaScript CALL STACK:'
+			for caller in lCallers
+				console.log "   #{caller}"
+			console.log '--------------------'
+			console.log "ERROR: #{msg} (in #{lCallers[0]}())"
 		if doHaltOnError
 			process.exit()
 		error msg

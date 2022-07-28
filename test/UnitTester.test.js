@@ -119,29 +119,30 @@ nonorm.notequal(64, "abc   xyz", "abc xyz");
 // --- Duplicate line numbers are not a problem
 simple.truthy(67, 9999);
 
-// --- Test new testing method hashwith()
-simple.hashwith(70, {
+// ---------------------------------------------------------------------------
+// test like, unlike
+simple.like(72, {
   a: 1,
   b: 2
 }, {
   a: 1
 });
 
-simple.nothashwith(71, {
+simple.unlike(73, {
   a: 1,
   b: 2
 }, {
   c: 3
 });
 
-simple.nothashwith(72, {
+simple.unlike(74, {
   a: 1,
   b: 2
 }, {
   a: 2
 });
 
-simple.hashwith(74, [
+simple.like(76, [
   {
     a: 1,
     b: 2
@@ -159,7 +160,36 @@ simple.hashwith(74, [
   }
 ]);
 
-simple.nothashwith(75, [
+simple.unlike(77, [
+  {
+    a: 1,
+    b: 2
+  }
+], [
+  {
+    a: 1
+  },
+  {
+    a: 3
+  }
+]);
+
+simple.unlike(78, [
+  {
+    a: 1,
+    b: 2
+  },
+  {
+    a: 3,
+    c: 5
+  }
+], [
+  {
+    a: 1
+  }
+]);
+
+simple.unlike(79, [
   {
     a: 1,
     b: 2
@@ -177,7 +207,7 @@ simple.nothashwith(75, [
   }
 ]);
 
-simple.nothashwith(76, [
+simple.unlike(80, [
   {
     a: 1,
     b: 2
@@ -195,6 +225,28 @@ simple.nothashwith(76, [
   }
 ]);
 
+simple.like(82, {
+  a: 1,
+  b: 2
+}, {
+  a: 1,
+  b: 2
+});
+
+simple.like(83, {
+  a: 1,
+  b: 2
+}, {
+  a: 1
+});
+
+simple.unlike(84, {
+  a: 1
+}, {
+  a: 1,
+  b: 2
+});
+
 // ---------------------------------------------------------------------------
 // --- Create custom unit testers
 (function() {
@@ -207,8 +259,8 @@ simple.nothashwith(76, [
 
   };
   custom = new CustomTester();
-  custom.equal(88, 'abc', 'ABC');
-  return custom.equal(89, '  abc  ', 'ABC');
+  custom.equal(96, 'abc', 'ABC');
+  return custom.equal(97, '  abc  ', 'ABC');
 })();
 
 (function() {
@@ -221,8 +273,8 @@ simple.nothashwith(76, [
 
   };
   custom = new CustomTester();
-  custom.equal(99, 2, 6);
-  return custom.equal(100, 5, 15);
+  custom.equal(107, 2, 6);
+  return custom.equal(108, 5, 15);
 })();
 
 (function() {
@@ -240,7 +292,7 @@ simple.nothashwith(76, [
 
   };
   custom = new CustomTester();
-  return custom.equal(112, " 3.14159 ", "3.9");
+  return custom.equal(120, " 3.14159 ", "3.9");
 })();
 
 (function() {
@@ -261,5 +313,5 @@ simple.nothashwith(76, [
 
   };
   custom = new CustomTester();
-  return custom.equal(128, 'meaningOfLife', 42);
+  return custom.equal(136, 'meaningOfLife', 42);
 })();

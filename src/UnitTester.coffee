@@ -39,7 +39,6 @@ export class UnitTester
 		for testDesc in [
 				['truthy', 'truthy']
 				['falsy', 'falsy']
-				['like', 'like']
 				['is', 'is']
 				['not', 'not']
 				['same', 'is']
@@ -201,7 +200,7 @@ export class UnitTester
 
 	# ........................................................................
 
-	hashwith: (lineNum, input, expected) ->
+	like: (lineNum, input, expected) ->
 
 		@whichTest = 'deepEqual'
 		if Array.isArray(input) && Array.isArray(expected)
@@ -213,7 +212,7 @@ export class UnitTester
 
 	# ........................................................................
 
-	nothashwith: (lineNum, input, expected) ->
+	unlike: (lineNum, input, expected) ->
 
 		@whichTest = 'notDeepEqual'
 		if Array.isArray(input) && Array.isArray(expected)
@@ -223,6 +222,8 @@ export class UnitTester
 		else
 			throw new Error("Bad args")
 
+	# ........................................................................
+	#          Standard Tests
 	# ........................................................................
 
 	equal: (lineNum, input, expected) ->
@@ -273,6 +274,7 @@ export class UnitTester
 		@test lineNum, ok
 		return
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 
 getCallers = (stackTrace, lExclude=[]) ->

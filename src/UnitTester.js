@@ -47,7 +47,7 @@ export var UnitTester = class UnitTester {
     this.hFound = {}; // used line numbers
     this.whichTest = 'deepEqual';
     this.label = 'unknown';
-    ref = [['truthy', 'truthy'], ['falsy', 'falsy'], ['like', 'like'], ['is', 'is'], ['not', 'not'], ['same', 'is'], ['different', 'not']];
+    ref = [['truthy', 'truthy'], ['falsy', 'falsy'], ['is', 'is'], ['not', 'not'], ['same', 'is'], ['different', 'not']];
     // --- We already have tests named:
     //        'equal', 'notequal', 'fails', 'succeeds'
     //     Add 4 more:
@@ -216,7 +216,7 @@ export var UnitTester = class UnitTester {
   }
 
   // ........................................................................
-  hashwith(lineNum, input, expected) {
+  like(lineNum, input, expected) {
     this.whichTest = 'deepEqual';
     if (Array.isArray(input) && Array.isArray(expected)) {
       return this.test(lineNum, this.getBasicArray(input, expected), expected);
@@ -228,7 +228,7 @@ export var UnitTester = class UnitTester {
   }
 
   // ........................................................................
-  nothashwith(lineNum, input, expected) {
+  unlike(lineNum, input, expected) {
     this.whichTest = 'notDeepEqual';
     if (Array.isArray(input) && Array.isArray(expected)) {
       return this.test(lineNum, this.getBasicArray(input, expected), expected);
@@ -239,6 +239,8 @@ export var UnitTester = class UnitTester {
     }
   }
 
+  // ........................................................................
+  //          Standard Tests
   // ........................................................................
   equal(lineNum, input, expected) {
     this.whichTest = 'deepEqual';
@@ -287,6 +289,7 @@ export var UnitTester = class UnitTester {
 
 };
 
+// ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 getCallers = function(stackTrace, lExclude = []) {
   var _, caller, iter, lCallers, lMatches;

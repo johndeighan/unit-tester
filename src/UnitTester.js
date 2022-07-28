@@ -223,6 +223,10 @@ export var UnitTester = class UnitTester {
     } else if ((input instanceof Object) && (expected instanceof Object)) {
       return this.test(lineNum, this.getBasicHash(input, expected), expected);
     } else {
+      console.log("input is:");
+      console.log(input);
+      console.log("expected is:");
+      console.log(expected);
       throw new Error("Bad args");
     }
   }

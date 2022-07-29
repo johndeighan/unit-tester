@@ -30,7 +30,8 @@ export class UnitTester
 	constructor: (@source=undef) ->
 
 		@hFound = {}   # used line numbers
-		@whichTest = 'deepEqual'
+		@whichAvaTest = 'deepEqual'
+		@whichTest = undef    # should be set by each test method
 		@label = 'unknown'
 
 		# --- We already have tests named:
@@ -46,7 +47,7 @@ export class UnitTester
 				]
 			[myName, avaName] = testDesc
 			@addTest myName, (lineNum, input, expected=undef) ->
-				@whichTest = avaName
+				@whichAvaTest = avaName
 				@test lineNum, input, expected
 				return
 
@@ -113,6 +114,9 @@ export class UnitTester
 
 		expected = @normalize(@transformExpected(expected))
 
+		if (@whichTest == 'like') || (@whichText == 'unlike')
+			got = mapInput(got, expected)
+
 		if process.env.UNIT_TEST_JUST_SHOW
 			console.log @label
 			if errMsg
@@ -124,14 +128,16 @@ export class UnitTester
 
 		# --- We need to save this here because in the tests themselves,
 		#     'this' won't be correct
-		whichTest = @whichTest
+		whichAvaTest = @whichAvaTest
 
 		# --- test names must be unique, getLineNum() ensures that
 		lineNum = @getLineNum(lineNum)
 		ident = @label
 		if @source
 			ident += " in #{@source}"
-		test ident, (t) -> t[whichTest](got, expected)
+
+		test ident, (t) -> t[whichAvaTest](got, expected)
+
 		if doDebug
 			console.log "Unit test #{lineNum} completed"
 		return
@@ -176,63 +182,31 @@ export class UnitTester
 		return text
 
 	# ........................................................................
-
-	getBasicHash: (input, expected) ->
-
-		assert input instanceof Object, "input not a hash"
-		assert expected instanceof Object, "expected not a hash"
-		hNew = {}
-		for own key,value of expected
-			hNew[key] = input[key]
-		return hNew
-
-	# ........................................................................
-
-	getBasicArray: (input, expected) ->
-
-		assert Array.isArray(input), "input not an array"
-		assert Array.isArray(expected), "expected not an array"
-		hCompare = expected[0]
-		lNew = []
-		for h,i in input
-			lNew.push @getBasicHash(h, hCompare)
-		return lNew
-
+	#          Tests
 	# ........................................................................
 
 	like: (lineNum, input, expected) ->
 
-		@whichTest = 'deepEqual'
-		if Array.isArray(input) && Array.isArray(expected)
-			@test lineNum, @getBasicArray(input, expected), expected
-		else if (input instanceof Object) && (expected instanceof Object)
-			@test lineNum, @getBasicHash(input, expected), expected
-		else
-			console.log "input is:"
-			console.log input
-			console.log "expected is:"
-			console.log expected
-			throw new Error("Bad args")
+		@whichTest = 'like'
+		@whichAvaTest = 'deepEqual'
+		@test lineNum, input, expected
+		return
 
 	# ........................................................................
 
 	unlike: (lineNum, input, expected) ->
 
-		@whichTest = 'notDeepEqual'
-		if Array.isArray(input) && Array.isArray(expected)
-			@test lineNum, @getBasicArray(input, expected), expected
-		else if (input instanceof Object) && (expected instanceof Object)
-			@test lineNum, @getBasicHash(input, expected), expected
-		else
-			throw new Error("Bad args")
+		@whichTest = 'unlike'
+		@whichAvaTest = 'notDeepEqual'
+		@test lineNum, input, expected
+		return
 
-	# ........................................................................
-	#          Standard Tests
 	# ........................................................................
 
 	equal: (lineNum, input, expected) ->
 
-		@whichTest = 'deepEqual'
+		@whichTest = 'equal'
+		@whichAvaTest = 'deepEqual'
 		@test lineNum, input, expected
 		return
 
@@ -240,7 +214,8 @@ export class UnitTester
 
 	notequal: (lineNum, input, expected) ->
 
-		@whichTest = 'notDeepEqual'
+		@whichTest = 'notequal'
+		@whichAvaTest = 'notDeepEqual'
 		@test lineNum, input, expected
 		return
 
@@ -258,7 +233,9 @@ export class UnitTester
 		catch err
 			ok = false
 		enableErrorLogging()
-		@whichTest = 'falsy'
+
+		@whichTest = 'fails'
+		@whichAvaTest = 'falsy'
 		@test lineNum, ok
 		return
 
@@ -274,7 +251,9 @@ export class UnitTester
 			ok = true
 		catch err
 			ok = false
-		@whichTest = 'truthy'
+
+		@whichTest = 'succeeds'
+		@whichAvaTest = 'truthy'
 		@test lineNum, ok
 		return
 
@@ -318,6 +297,27 @@ export class UnitTesterSuperNorm extends UnitTester
 
 	normalize: (text) ->
 		return super_normalize(text)
+
+# ---------------------------------------------------------------------------
+
+export mapInput =(input, expected) ->
+
+	if Array.isArray(input) && Array.isArray(expected)
+		lNewInput = []
+		for item,i in input
+			if expected[i] != undef
+				mapped = mapInput(item, expected[i])
+			else
+				mapped = item
+			lNewInput.push mapped
+		return lNewInput
+	else if (input instanceof Object) && (expected instanceof Object)
+		hNewInput = {}
+		for own key,value of expected
+			hNewInput[key] = input[key]
+		return hNewInput
+	else
+		return input
 
 # ---------------------------------------------------------------------------
 

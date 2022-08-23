@@ -18,7 +18,7 @@ isFunction = (x) -> typeof x == 'function'
 isInteger = (x) ->
 	if (typeof x == 'number')
 		return Number.isInteger(x)
-	else if (getClassName(x) == 'Number')
+	else if (x instanceof Number)
 		return Number.isInteger(x.valueOf())
 	else
 		return false
@@ -114,7 +114,7 @@ export class UnitTester
 
 		expected = @normalize(@transformExpected(expected))
 
-		if (@whichTest == 'like') || (@whichText == 'unlike')
+		if (@whichTest == 'like') || (@whichTest == 'unlike')
 			got = mapInput(got, expected)
 
 		if process.env.UNIT_TEST_JUST_SHOW
@@ -217,6 +217,28 @@ export class UnitTester
 		@whichTest = 'notequal'
 		@whichAvaTest = 'notDeepEqual'
 		@test lineNum, input, expected
+		return
+
+	# ........................................................................
+
+	defined: (lineNum, input) ->
+
+		if (input == null)
+			input = undef
+		@whichTest = 'defined'
+		@whichAvaTest = 'not'
+		@test lineNum, input, undef
+		return
+
+	# ........................................................................
+
+	notdefined: (lineNum, input) ->
+
+		if (input == null)
+			input = undef
+		@whichTest = 'notdefined'
+		@whichAvaTest = 'is'
+		@test lineNum, input, undef
 		return
 
 	# ........................................................................

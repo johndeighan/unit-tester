@@ -32,7 +32,7 @@ isFunction = function(x) {
 isInteger = function(x) {
   if (typeof x === 'number') {
     return Number.isInteger(x);
-  } else if (getClassName(x) === 'Number') {
+  } else if (x instanceof Number) {
     return Number.isInteger(x.valueOf());
   } else {
     return false;
@@ -126,7 +126,7 @@ export var UnitTester = class UnitTester {
       throw err;
     }
     expected = this.normalize(this.transformExpected(expected));
-    if ((this.whichTest === 'like') || (this.whichText === 'unlike')) {
+    if ((this.whichTest === 'like') || (this.whichTest === 'unlike')) {
       got = mapInput(got, expected);
     }
     if (process.env.UNIT_TEST_JUST_SHOW) {
@@ -219,6 +219,26 @@ export var UnitTester = class UnitTester {
     this.whichTest = 'notequal';
     this.whichAvaTest = 'notDeepEqual';
     this.test(lineNum, input, expected);
+  }
+
+  // ........................................................................
+  defined(lineNum, input) {
+    if (input === null) {
+      input = undef;
+    }
+    this.whichTest = 'defined';
+    this.whichAvaTest = 'not';
+    this.test(lineNum, input, undef);
+  }
+
+  // ........................................................................
+  notdefined(lineNum, input) {
+    if (input === null) {
+      input = undef;
+    }
+    this.whichTest = 'notdefined';
+    this.whichAvaTest = 'is';
+    this.test(lineNum, input, undef);
   }
 
   // ........................................................................

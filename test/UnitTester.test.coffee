@@ -96,6 +96,13 @@ simple.notdefined 95, undef
 simple.notdefined 96, null
 
 # ---------------------------------------------------------------------------
+
+# test about, notabout
+
+simple.about 102, 3.14159, 3.14158
+simple.notabout 103, 3.14159, 42
+
+# ---------------------------------------------------------------------------
 # --- Create custom unit testers
 
 (() ->
@@ -105,8 +112,8 @@ simple.notdefined 96, null
 		transformValue: (input) -> return input.toUpperCase()
 
 	custom = new CustomTester()
-	custom.equal 108, 'abc', 'ABC'
-	custom.equal 109, '  abc  ', 'ABC'
+	custom.equal 115, 'abc', 'ABC'
+	custom.equal 116, '  abc  ', 'ABC'
 	)()
 
 (() ->
@@ -116,8 +123,8 @@ simple.notdefined 96, null
 		transformValue: (input) -> return 3 * input
 
 	custom = new CustomTester()
-	custom.equal 119, 2, 6
-	custom.equal 120, 5, 15
+	custom.equal 126, 2, 6
+	custom.equal 127, 5, 15
 	)()
 
 (() ->
@@ -129,7 +136,7 @@ simple.notdefined 96, null
 		transformExpected: (str) -> return Math.floor(parseFloat(str))
 
 	custom = new CustomTester()
-	custom.equal 132, " 3.14159 ", "3.9"
+	custom.equal 139, " 3.14159 ", "3.9"
 	)()
 
 (() ->
@@ -145,5 +152,5 @@ simple.notdefined 96, null
 		transformValue: (str) -> return @h[str]
 
 	custom = new CustomTester()
-	custom.equal 148, 'meaningOfLife', 42
+	custom.equal 155, 'meaningOfLife', 42
 	)()

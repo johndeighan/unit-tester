@@ -262,6 +262,13 @@ simple.notdefined(95, undef);
 simple.notdefined(96, null);
 
 // ---------------------------------------------------------------------------
+
+// test about, notabout
+simple.about(102, 3.14159, 3.14158);
+
+simple.notabout(103, 3.14159, 42);
+
+// ---------------------------------------------------------------------------
 // --- Create custom unit testers
 (function() {
   var CustomTester, custom;
@@ -273,8 +280,8 @@ simple.notdefined(96, null);
 
   };
   custom = new CustomTester();
-  custom.equal(108, 'abc', 'ABC');
-  return custom.equal(109, '  abc  ', 'ABC');
+  custom.equal(115, 'abc', 'ABC');
+  return custom.equal(116, '  abc  ', 'ABC');
 })();
 
 (function() {
@@ -287,8 +294,8 @@ simple.notdefined(96, null);
 
   };
   custom = new CustomTester();
-  custom.equal(119, 2, 6);
-  return custom.equal(120, 5, 15);
+  custom.equal(126, 2, 6);
+  return custom.equal(127, 5, 15);
 })();
 
 (function() {
@@ -306,7 +313,7 @@ simple.notdefined(96, null);
 
   };
   custom = new CustomTester();
-  return custom.equal(132, " 3.14159 ", "3.9");
+  return custom.equal(139, " 3.14159 ", "3.9");
 })();
 
 (function() {
@@ -327,5 +334,5 @@ simple.notdefined(96, null);
 
   };
   custom = new CustomTester();
-  return custom.equal(148, 'meaningOfLife', 42);
+  return custom.equal(155, 'meaningOfLife', 42);
 })();

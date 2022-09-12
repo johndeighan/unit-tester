@@ -23,6 +23,15 @@ isInteger = (x) ->
 	else
 		return false
 
+epsilon = 0.0001
+
+# ---------------------------------------------------------------------------
+
+export setEpsilon = (ep=0.0001) ->
+
+	epsilon = ep
+	return
+
 # ---------------------------------------------------------------------------
 
 export class UnitTester
@@ -217,6 +226,24 @@ export class UnitTester
 		@whichTest = 'notequal'
 		@whichAvaTest = 'notDeepEqual'
 		@test lineNum, input, expected
+		return
+
+	# ........................................................................
+
+	about: (lineNum, input, expected) ->
+
+		@whichTest = 'about'
+		@whichAvaTest = 'truthy'
+		@test lineNum, (Math.abs(input - expected) <= epsilon)
+		return
+
+	# ........................................................................
+
+	notabout: (lineNum, input, expected) ->
+
+		@whichTest = 'notabout'
+		@whichAvaTest = 'truthy'
+		@test lineNum, (Math.abs(input - expected) > epsilon)
 		return
 
 	# ........................................................................

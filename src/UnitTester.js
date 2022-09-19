@@ -6,13 +6,14 @@ var epsilon, getCallers, isFunction, isInteger, isString,
 
 import test from 'ava';
 
-import assert from 'assert';
+import {
+  assert,
+  logErrors
+} from '@jdeighan/exceptions';
 
 import {
   normalize,
-  super_normalize,
-  disableErrorLogging,
-  enableErrorLogging
+  super_normalize
 } from '@jdeighan/unit-tester/utils';
 
 // --- These are currently part of coffee-utils
@@ -268,14 +269,14 @@ export var UnitTester = class UnitTester {
     assert(expected == null, "UnitTester: fails doesn't allow expected");
     assert(isFunction(func), "UnitTester: fails requires a function");
     try {
-      disableErrorLogging();
+      logErrors(false);
       func();
       ok = true;
     } catch (error) {
       err = error;
       ok = false;
     }
-    enableErrorLogging();
+    logErrors(true);
     this.whichTest = 'fails';
     this.whichAvaTest = 'falsy';
     this.test(lineNum, ok);

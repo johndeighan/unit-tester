@@ -1,10 +1,10 @@
 # UnitTester.coffee
 
 import test from 'ava'
-import assert from 'assert'
+import {assert, logErrors} from '@jdeighan/exceptions'
 
 import {
-	normalize, super_normalize, disableErrorLogging, enableErrorLogging,
+	normalize, super_normalize,
 	} from '@jdeighan/unit-tester/utils'
 
 # --- These are currently part of coffee-utils
@@ -276,12 +276,12 @@ export class UnitTester
 		assert isFunction(func), "UnitTester: fails requires a function"
 
 		try
-			disableErrorLogging()
+			logErrors(false)
 			func()
 			ok = true
 		catch err
 			ok = false
-		enableErrorLogging()
+		logErrors(true)
 
 		@whichTest = 'fails'
 		@whichAvaTest = 'falsy'

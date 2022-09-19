@@ -77,3 +77,14 @@ simple.equal 75, super_normalize("""
 		"""), """
 		y=func(y)+3
 		"""
+
+block = """
+	abc\tdef
+	\tabc     def
+	"""
+
+norm = normalize(block)
+snorm = super_normalize(block)
+
+simple.equal 89, norm, "abc def\nabc def"
+simple.equal 90, snorm, "abc def abc def"

@@ -1,7 +1,7 @@
 # UnitTester.coffee
 
 import test from 'ava'
-import {assert, logErrors} from '@jdeighan/exceptions'
+import {assert, haltOnError, logErrors} from '@jdeighan/exceptions'
 
 import {
 	normalize, super_normalize,
@@ -275,13 +275,16 @@ export class UnitTester
 		assert ! expected?, "UnitTester: fails doesn't allow expected"
 		assert isFunction(func), "UnitTester: fails requires a function"
 
+		# --- Turn off logging errors while checking for failure
+		saveHalt = haltOnError false    # turn off halting on error
+		saveLogging = logErrors false   # turn off logging errors
 		try
-			logErrors(false)
 			func()
 			ok = true
 		catch err
 			ok = false
-		logErrors(true)
+		haltOnError saveHalt
+		logErrors saveLogging
 
 		@whichTest = 'fails'
 		@whichAvaTest = 'falsy'

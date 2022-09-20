@@ -8,6 +8,7 @@ import test from 'ava';
 
 import {
   assert,
+  haltOnError,
   logErrors
 } from '@jdeighan/exceptions';
 
@@ -265,18 +266,21 @@ export var UnitTester = class UnitTester {
 
   // ........................................................................
   fails(lineNum, func, expected) {
-    var err, ok;
+    var err, ok, saveHalt, saveLogging;
     assert(expected == null, "UnitTester: fails doesn't allow expected");
     assert(isFunction(func), "UnitTester: fails requires a function");
+    // --- Turn off logging errors while checking for failure
+    saveHalt = haltOnError(false); // turn off halting on error
+    saveLogging = logErrors(false); // turn off logging errors
     try {
-      logErrors(false);
       func();
       ok = true;
     } catch (error) {
       err = error;
       ok = false;
     }
-    logErrors(true);
+    haltOnError(saveHalt);
+    logErrors(saveLogging);
     this.whichTest = 'fails';
     this.whichAvaTest = 'falsy';
     this.test(lineNum, ok);

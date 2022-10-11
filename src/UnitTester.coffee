@@ -1,7 +1,11 @@
 # UnitTester.coffee
 
 import test from 'ava'
-import {assert, haltOnError, logErrors} from '@jdeighan/exceptions'
+import {
+	undef, pass, isString, isFunction, isInteger,
+	} from '@jdeighan/exceptions/utils'
+import {assert, haltOnError} from '@jdeighan/exceptions'
+import {setLogger} from '@jdeighan/exceptions/log'
 
 import {
 	normalize, super_normalize,
@@ -11,17 +15,6 @@ import {
 #     But should probably be moved to a lower level library
 #     We don't want to import coffee-utils anymore, so for now
 #        we just define them here
-
-`const undef = undefined`
-isString = (x) -> (typeof x == 'string') || (x instanceof String)
-isFunction = (x) -> typeof x == 'function'
-isInteger = (x) ->
-	if (typeof x == 'number')
-		return Number.isInteger(x)
-	else if (x instanceof Number)
-		return Number.isInteger(x.valueOf())
-	else
-		return false
 
 epsilon = 0.0001
 
@@ -276,15 +269,15 @@ export class UnitTester
 		assert isFunction(func), "UnitTester: fails requires a function"
 
 		# --- Turn off logging errors while checking for failure
-		saveHalt = haltOnError false    # turn off halting on error
-		saveLogging = logErrors false   # turn off logging errors
+		saveHalt = haltOnError false          # turn off halting on error
+		saveLogger = setLogger (x) => pass()  # turn off logging
 		try
 			func()
 			ok = true
 		catch err
 			ok = false
 		haltOnError saveHalt
-		logErrors saveLogging
+		setLogger saveLogger
 
 		@whichTest = 'fails'
 		@whichAvaTest = 'falsy'

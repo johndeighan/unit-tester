@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"build": "cls && coffee -c .",
-		"test": "npm run build && ava ./test/*.test.js",
+		"test": "npm run build && ava ./test/*.test.js && git status",
 		"publish": "npm publish --access=public"
 	},
 	"ava": {
@@ -23,7 +23,7 @@
 	"author": "John Deighan",
 	"license": "MIT",
 	"dependencies": {
-		"@jdeighan/exceptions": "^1.0.7",
+		"@jdeighan/exceptions": "^1.0.8",
 		"ava": "^4.3.3",
 		"coffeescript": "^2.7.0"
 	}

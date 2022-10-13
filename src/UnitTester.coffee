@@ -366,4 +366,4 @@ export mapInput =(input, expected) ->
 
 # ---------------------------------------------------------------------------
 
-export simple = new UnitTester()
+export tester = new UnitTester()

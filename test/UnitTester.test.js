@@ -5,7 +5,7 @@ var nonorm, norm, result;
 import {
   UnitTester,
   UnitTesterNorm,
-  simple
+  tester
 } from '@jdeighan/unit-tester';
 
 const undef = undefined;
@@ -14,24 +14,24 @@ nonorm = new UnitTester();
 
 norm = new UnitTesterNorm();
 
-simple.equal(10, 42, 42);
+tester.equal(10, 42, 42);
 
-simple.equal(11, 40 + 2, 42);
+tester.equal(11, 40 + 2, 42);
 
-simple.notequal(12, 40 + 3, 42);
+tester.notequal(12, 40 + 3, 42);
 
 // --- allow custom labels
-simple.equal("line 997", 42, 42);
+tester.equal("line 997", 42, 42);
 
-simple.equal("line 998", 40 + 2, 42);
+tester.equal("line 998", 40 + 2, 42);
 
-simple.notequal("line 999", 40 + 3, 42);
+tester.notequal("line 999", 40 + 3, 42);
 
-simple.equal(19, [2, 3], [2, 3]);
+tester.equal(19, [2, 3], [2, 3]);
 
-simple.notequal(20, [2, 3], [2, 4]);
+tester.notequal(20, [2, 3], [2, 4]);
 
-simple.equal(21, {
+tester.equal(21, {
   a: 1,
   b: 2
 }, {
@@ -39,7 +39,7 @@ simple.equal(21, {
   b: 2
 });
 
-simple.notequal(22, {
+tester.notequal(22, {
   a: 1,
   b: 2
 }, {
@@ -47,47 +47,47 @@ simple.notequal(22, {
   b: 3
 });
 
-simple.different(24, [2, 3], [2, 3]);
+tester.different(24, [2, 3], [2, 3]);
 
-simple.fails(26, function() {
+tester.fails(26, function() {
   throw "not OK";
 });
 
-simple.succeeds(27, function() {
+tester.succeeds(27, function() {
   return 42;
 });
 
-simple.succeeds(29, function() {
-  return simple.truthy(9997, false);
+tester.succeeds(29, function() {
+  return tester.truthy(9997, false);
 });
 
-simple.succeeds(30, function() {
-  return simple.truthy(9998, true);
+tester.succeeds(30, function() {
+  return tester.truthy(9998, true);
 });
 
-simple.succeeds(31, function() {
-  return simple.falsy(9999, false);
+tester.succeeds(31, function() {
+  return tester.falsy(9999, false);
 });
 
-simple.truthy(33, true);
+tester.truthy(33, true);
 
-simple.falsy(34, false);
+tester.falsy(34, false);
 
 result = true;
 
-simple.truthy(37, result);
+tester.truthy(37, result);
 
 result = false;
 
-simple.falsy(40, result);
+tester.falsy(40, result);
 
-simple.truthy(42, 99);
+tester.truthy(42, 99);
 
-simple.falsy(43, 0);
+tester.falsy(43, 0);
 
-simple.truthy(44, 'abc');
+tester.truthy(44, 'abc');
 
-simple.falsy(45, '');
+tester.falsy(45, '');
 
 // --- with nonorm
 nonorm.truthy(49, true);
@@ -120,32 +120,32 @@ nonorm.notequal(66, "  abc xyz   ", "abc xyz");
 nonorm.notequal(67, "abc   xyz", "abc xyz");
 
 // --- Duplicate line numbers are not a problem
-simple.truthy(70, 9999);
+tester.truthy(70, 9999);
 
 // ---------------------------------------------------------------------------
 // test like, unlike
-simple.like(75, {
+tester.like(75, {
   a: 1,
   b: 2
 }, {
   a: 1
 });
 
-simple.unlike(76, {
+tester.unlike(76, {
   a: 1,
   b: 2
 }, {
   c: 3
 });
 
-simple.unlike(77, {
+tester.unlike(77, {
   a: 1,
   b: 2
 }, {
   a: 2
 });
 
-simple.like(79, [
+tester.like(79, [
   {
     a: 1,
     b: 2
@@ -163,7 +163,7 @@ simple.like(79, [
   }
 ]);
 
-simple.unlike(80, [
+tester.unlike(80, [
   {
     a: 1,
     b: 2
@@ -177,7 +177,7 @@ simple.unlike(80, [
   }
 ]);
 
-simple.unlike(81, [
+tester.unlike(81, [
   {
     a: 1,
     b: 2
@@ -192,7 +192,7 @@ simple.unlike(81, [
   }
 ]);
 
-simple.unlike(82, [
+tester.unlike(82, [
   {
     a: 1,
     b: 2
@@ -210,7 +210,7 @@ simple.unlike(82, [
   }
 ]);
 
-simple.unlike(83, [
+tester.unlike(83, [
   {
     a: 1,
     b: 2
@@ -228,7 +228,7 @@ simple.unlike(83, [
   }
 ]);
 
-simple.like(85, {
+tester.like(85, {
   a: 1,
   b: 2
 }, {
@@ -236,14 +236,14 @@ simple.like(85, {
   b: 2
 });
 
-simple.like(86, {
+tester.like(86, {
   a: 1,
   b: 2
 }, {
   a: 1
 });
 
-simple.unlike(87, {
+tester.unlike(87, {
   a: 1
 }, {
   a: 1,
@@ -253,20 +253,20 @@ simple.unlike(87, {
 // ---------------------------------------------------------------------------
 
 // test defined, notdefined
-simple.defined(93, 23);
+tester.defined(93, 23);
 
-simple.defined(94, 'abc');
+tester.defined(94, 'abc');
 
-simple.notdefined(95, undef);
+tester.notdefined(95, undef);
 
-simple.notdefined(96, null);
+tester.notdefined(96, null);
 
 // ---------------------------------------------------------------------------
 
 // test about, notabout
-simple.about(102, 3.14159, 3.14158);
+tester.about(102, 3.14159, 3.14158);
 
-simple.notabout(103, 3.14159, 42);
+tester.notabout(103, 3.14159, 42);
 
 // ---------------------------------------------------------------------------
 // --- Create custom unit testers

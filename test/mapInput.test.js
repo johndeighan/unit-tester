@@ -2,11 +2,11 @@
   // mapInput.test.coffee
 import {
   UnitTester,
-  simple,
+  tester,
   mapInput
 } from '@jdeighan/unit-tester';
 
-simple.equal(5, mapInput({
+tester.equal(5, mapInput({
   a: 1,
   b: 2
 }, {
@@ -15,7 +15,7 @@ simple.equal(5, mapInput({
   a: 1
 });
 
-simple.equal(6, mapInput({
+tester.equal(6, mapInput({
   a: 1,
   b: 2
 }, {
@@ -24,7 +24,7 @@ simple.equal(6, mapInput({
   a: 1
 });
 
-simple.equal(7, mapInput({
+tester.equal(7, mapInput({
   a: 1,
   b: 2,
   c: 3,
@@ -37,7 +37,7 @@ simple.equal(7, mapInput({
   c: 3
 });
 
-simple.equal(8, mapInput([
+tester.equal(8, mapInput([
   {
     a: 1,
     b: 2
@@ -52,7 +52,7 @@ simple.equal(8, mapInput([
   }
 ]);
 
-simple.equal(9, mapInput([
+tester.equal(9, mapInput([
   {
     c: 3,
     d: 4
@@ -67,7 +67,7 @@ simple.equal(9, mapInput([
   }
 ]);
 
-simple.equal(10, mapInput([
+tester.equal(10, mapInput([
   {
     a: 1,
     b: 2

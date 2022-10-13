@@ -364,4 +364,4 @@ export var mapInput = function(input, expected) {
 };
 
 // ---------------------------------------------------------------------------
-export var simple = new UnitTester();
+export var tester = new UnitTester();

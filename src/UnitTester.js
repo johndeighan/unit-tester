@@ -364,4 +364,6 @@ export var mapInput = function(input, expected) {
 };
 
 // ---------------------------------------------------------------------------
-export var tester = new UnitTester();
+export var tester = new UnitTester(); // deprecated
+
+export var utest = new UnitTester();

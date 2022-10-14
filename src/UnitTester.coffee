@@ -366,4 +366,5 @@ export mapInput =(input, expected) ->
 
 # ---------------------------------------------------------------------------
 
-export tester = new UnitTester()
+export tester = new UnitTester()   # deprecated
+export utest = new UnitTester()

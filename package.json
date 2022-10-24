@@ -24,7 +24,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@jdeighan/exceptions": "^1.0.20",
-		"ava": "^5.0.1",
+		"ava": "^4.3.3",
 		"coffeescript": "^2.7.0"
 	}
 }

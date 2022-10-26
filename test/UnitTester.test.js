@@ -5,7 +5,7 @@ var nonorm, norm, result;
 import {
   UnitTester,
   UnitTesterNorm,
-  tester
+  utest
 } from '@jdeighan/unit-tester';
 
 const undef = undefined;
@@ -14,24 +14,24 @@ nonorm = new UnitTester();
 
 norm = new UnitTesterNorm();
 
-tester.equal(10, 42, 42);
+utest.equal(10, 42, 42);
 
-tester.equal(11, 40 + 2, 42);
+utest.equal(11, 40 + 2, 42);
 
-tester.notequal(12, 40 + 3, 42);
+utest.notequal(12, 40 + 3, 42);
 
 // --- allow custom labels
-tester.equal("line 997", 42, 42);
+utest.equal("line 997", 42, 42);
 
-tester.equal("line 998", 40 + 2, 42);
+utest.equal("line 998", 40 + 2, 42);
 
-tester.notequal("line 999", 40 + 3, 42);
+utest.notequal("line 999", 40 + 3, 42);
 
-tester.equal(19, [2, 3], [2, 3]);
+utest.equal(19, [2, 3], [2, 3]);
 
-tester.notequal(20, [2, 3], [2, 4]);
+utest.notequal(20, [2, 3], [2, 4]);
 
-tester.equal(21, {
+utest.equal(21, {
   a: 1,
   b: 2
 }, {
@@ -39,7 +39,7 @@ tester.equal(21, {
   b: 2
 });
 
-tester.notequal(22, {
+utest.notequal(22, {
   a: 1,
   b: 2
 }, {
@@ -47,47 +47,47 @@ tester.notequal(22, {
   b: 3
 });
 
-tester.different(24, [2, 3], [2, 3]);
+utest.different(24, [2, 3], [2, 3]);
 
-tester.fails(26, function() {
+utest.fails(26, function() {
   throw "not OK";
 });
 
-tester.succeeds(27, function() {
+utest.succeeds(27, function() {
   return 42;
 });
 
-tester.succeeds(29, function() {
-  return tester.truthy(9997, false);
+utest.succeeds(29, function() {
+  return utest.truthy(9997, false);
 });
 
-tester.succeeds(30, function() {
-  return tester.truthy(9998, true);
+utest.succeeds(30, function() {
+  return utest.truthy(9998, true);
 });
 
-tester.succeeds(31, function() {
-  return tester.falsy(9999, false);
+utest.succeeds(31, function() {
+  return utest.falsy(9999, false);
 });
 
-tester.truthy(33, true);
+utest.truthy(33, true);
 
-tester.falsy(34, false);
+utest.falsy(34, false);
 
 result = true;
 
-tester.truthy(37, result);
+utest.truthy(37, result);
 
 result = false;
 
-tester.falsy(40, result);
+utest.falsy(40, result);
 
-tester.truthy(42, 99);
+utest.truthy(42, 99);
 
-tester.falsy(43, 0);
+utest.falsy(43, 0);
 
-tester.truthy(44, 'abc');
+utest.truthy(44, 'abc');
 
-tester.falsy(45, '');
+utest.falsy(45, '');
 
 // --- with nonorm
 nonorm.truthy(49, true);
@@ -120,32 +120,32 @@ nonorm.notequal(66, "  abc xyz   ", "abc xyz");
 nonorm.notequal(67, "abc   xyz", "abc xyz");
 
 // --- Duplicate line numbers are not a problem
-tester.truthy(70, 9999);
+utest.truthy(70, 9999);
 
 // ---------------------------------------------------------------------------
 // test like, unlike
-tester.like(75, {
+utest.like(75, {
   a: 1,
   b: 2
 }, {
   a: 1
 });
 
-tester.unlike(76, {
+utest.unlike(76, {
   a: 1,
   b: 2
 }, {
   c: 3
 });
 
-tester.unlike(77, {
+utest.unlike(77, {
   a: 1,
   b: 2
 }, {
   a: 2
 });
 
-tester.like(79, [
+utest.like(79, [
   {
     a: 1,
     b: 2
@@ -163,7 +163,7 @@ tester.like(79, [
   }
 ]);
 
-tester.unlike(80, [
+utest.unlike(80, [
   {
     a: 1,
     b: 2
@@ -177,7 +177,7 @@ tester.unlike(80, [
   }
 ]);
 
-tester.unlike(81, [
+utest.unlike(81, [
   {
     a: 1,
     b: 2
@@ -192,7 +192,7 @@ tester.unlike(81, [
   }
 ]);
 
-tester.unlike(82, [
+utest.unlike(82, [
   {
     a: 1,
     b: 2
@@ -210,7 +210,7 @@ tester.unlike(82, [
   }
 ]);
 
-tester.unlike(83, [
+utest.unlike(83, [
   {
     a: 1,
     b: 2
@@ -228,7 +228,7 @@ tester.unlike(83, [
   }
 ]);
 
-tester.like(85, {
+utest.like(85, {
   a: 1,
   b: 2
 }, {
@@ -236,14 +236,14 @@ tester.like(85, {
   b: 2
 });
 
-tester.like(86, {
+utest.like(86, {
   a: 1,
   b: 2
 }, {
   a: 1
 });
 
-tester.unlike(87, {
+utest.unlike(87, {
   a: 1
 }, {
   a: 1,
@@ -253,20 +253,20 @@ tester.unlike(87, {
 // ---------------------------------------------------------------------------
 
 // test defined, notdefined
-tester.defined(93, 23);
+utest.defined(93, 23);
 
-tester.defined(94, 'abc');
+utest.defined(94, 'abc');
 
-tester.notdefined(95, undef);
+utest.notdefined(95, undef);
 
-tester.notdefined(96, null);
+utest.notdefined(96, null);
 
 // ---------------------------------------------------------------------------
 
 // test about, notabout
-tester.about(102, 3.14159, 3.14158);
+utest.about(102, 3.14159, 3.14158);
 
-tester.notabout(103, 3.14159, 42);
+utest.notabout(103, 3.14159, 42);
 
 // ---------------------------------------------------------------------------
 // --- Create custom unit testers

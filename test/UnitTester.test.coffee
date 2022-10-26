@@ -1,48 +1,48 @@
 # UnitTester.test.coffee
 
-import {UnitTester, UnitTesterNorm, tester} from '@jdeighan/unit-tester'
+import {UnitTester, UnitTesterNorm, utest} from '@jdeighan/unit-tester'
 
 `const undef = undefined`
 
 nonorm = new UnitTester()
 norm = new UnitTesterNorm()
 
-tester.equal 10, 42, 42
-tester.equal 11, 40 + 2, 42
-tester.notequal 12, 40 + 3, 42
+utest.equal 10, 42, 42
+utest.equal 11, 40 + 2, 42
+utest.notequal 12, 40 + 3, 42
 
 # --- allow custom labels
-tester.equal "line 997", 42, 42
-tester.equal "line 998", 40 + 2, 42
-tester.notequal "line 999", 40 + 3, 42
+utest.equal "line 997", 42, 42
+utest.equal "line 998", 40 + 2, 42
+utest.notequal "line 999", 40 + 3, 42
 
-tester.equal 19, [2,3], [2,3]
-tester.notequal 20, [2,3], [2,4]
-tester.equal 21, {a:1, b:2}, {a:1, b:2}
-tester.notequal 22, {a:1, b:2}, {a:1, b:3}
+utest.equal 19, [2,3], [2,3]
+utest.notequal 20, [2,3], [2,4]
+utest.equal 21, {a:1, b:2}, {a:1, b:2}
+utest.notequal 22, {a:1, b:2}, {a:1, b:3}
 
-tester.different 24, [2,3], [2,3]
+utest.different 24, [2,3], [2,3]
 
-tester.fails 26,    () -> throw "not OK"
-tester.succeeds 27, () -> return 42
+utest.fails 26,    () -> throw "not OK"
+utest.succeeds 27, () -> return 42
 
-tester.succeeds 29, () -> tester.truthy(9997, false)
-tester.succeeds 30, () -> tester.truthy(9998, true)
-tester.succeeds 31, () -> tester.falsy(9999, false)
+utest.succeeds 29, () -> utest.truthy(9997, false)
+utest.succeeds 30, () -> utest.truthy(9998, true)
+utest.succeeds 31, () -> utest.falsy(9999, false)
 
-tester.truthy 33, true
-tester.falsy 34, false
+utest.truthy 33, true
+utest.falsy 34, false
 
 result = true
-tester.truthy 37, result
+utest.truthy 37, result
 
 result = false
-tester.falsy 40, result
+utest.falsy 40, result
 
-tester.truthy 42, 99
-tester.falsy 43, 0
-tester.truthy 44, 'abc'
-tester.falsy 45, ''
+utest.truthy 42, 99
+utest.falsy 43, 0
+utest.truthy 44, 'abc'
+utest.falsy 45, ''
 
 # --- with nonorm
 
@@ -67,40 +67,40 @@ nonorm.notequal 66, "  abc xyz   ", "abc xyz"
 nonorm.notequal 67, "abc   xyz", "abc xyz"
 
 # --- Duplicate line numbers are not a problem
-tester.truthy 70, 9999
+utest.truthy 70, 9999
 
 # ---------------------------------------------------------------------------
 # test like, unlike
 
-tester.like 75, {a:1, b:2}, {a:1}
-tester.unlike 76, {a:1, b:2}, {c:3}
-tester.unlike 77, {a:1, b:2}, {a:2}
+utest.like 75, {a:1, b:2}, {a:1}
+utest.unlike 76, {a:1, b:2}, {c:3}
+utest.unlike 77, {a:1, b:2}, {a:2}
 
-tester.like 79, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:3}]
-tester.unlike 80, [{a:1, b:2}], [{a:1}, {a:3}]
-tester.unlike 81, [{a:1, b:2}, {a:3, c:5}], [{a:1}]
-tester.unlike 82, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:4}]
-tester.unlike 83, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {b:3}]
+utest.like 79, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:3}]
+utest.unlike 80, [{a:1, b:2}], [{a:1}, {a:3}]
+utest.unlike 81, [{a:1, b:2}, {a:3, c:5}], [{a:1}]
+utest.unlike 82, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:4}]
+utest.unlike 83, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {b:3}]
 
-tester.like 85, {a:1, b:2}, {a:1, b:2}
-tester.like 86, {a:1, b:2}, {a:1}
-tester.unlike 87, {a:1}, {a:1, b:2}
+utest.like 85, {a:1, b:2}, {a:1, b:2}
+utest.like 86, {a:1, b:2}, {a:1}
+utest.unlike 87, {a:1}, {a:1, b:2}
 
 # ---------------------------------------------------------------------------
 
 # test defined, notdefined
 
-tester.defined 93, 23
-tester.defined 94, 'abc'
-tester.notdefined 95, undef
-tester.notdefined 96, null
+utest.defined 93, 23
+utest.defined 94, 'abc'
+utest.notdefined 95, undef
+utest.notdefined 96, null
 
 # ---------------------------------------------------------------------------
 
 # test about, notabout
 
-tester.about 102, 3.14159, 3.14158
-tester.notabout 103, 3.14159, 42
+utest.about 102, 3.14159, 3.14158
+utest.notabout 103, 3.14159, 42
 
 # ---------------------------------------------------------------------------
 # --- Create custom unit testers

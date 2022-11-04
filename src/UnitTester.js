@@ -12,16 +12,16 @@ import {
   isString,
   isFunction,
   isInteger
-} from '@jdeighan/exceptions/utils';
+} from '@jdeighan/base-utils/utils';
 
 import {
   assert,
   haltOnError
-} from '@jdeighan/exceptions';
+} from '@jdeighan/base-utils';
 
 import {
   setLogger
-} from '@jdeighan/exceptions/log';
+} from '@jdeighan/base-utils/log';
 
 import {
   normalize,

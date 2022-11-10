@@ -17,6 +17,7 @@ import {
 #        we just define them here
 
 epsilon = 0.0001
+haltOnError false
 
 # ---------------------------------------------------------------------------
 
@@ -65,12 +66,17 @@ export class UnitTester
 	test: (lineNum, input, expected) ->
 
 		if isString(lineNum)
-			if lMatches = lineNum.match(/(\d+)$/)
-				lineNum = parseInt(lMatches[1], 10)
+			if lMatches = lineNum.match(///^ (.*) (\d+) $///)
+				[_, prefix, lineNumStr] = lMatches
+				lineNum = @getLineNum(parseInt(lineNumStr, 10))
 			else
 				throw new Error("test(): Invalid line number: #{lineNum}")
-		else if ! isInteger(lineNum)
+		else if isInteger(lineNum)
+			# --- test names must be unique, getLineNum() ensures that
+			lineNum = @getLineNum(lineNum)
+		else
 			throw new Error("test(): Invalid line number: #{lineNum}")
+
 		@label = "line #{lineNum}"
 
 		assert isInteger(lineNum) && (lineNum > 0),
@@ -132,8 +138,6 @@ export class UnitTester
 		#     'this' won't be correct
 		whichAvaTest = @whichAvaTest
 
-		# --- test names must be unique, getLineNum() ensures that
-		lineNum = @getLineNum(lineNum)
 		ident = @label
 		if @source
 			ident += " in #{@source}"

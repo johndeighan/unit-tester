@@ -34,6 +34,8 @@ import {
 //        we just define them here
 epsilon = 0.0001;
 
+haltOnError(false);
+
 // ---------------------------------------------------------------------------
 export var setEpsilon = function(ep = 0.0001) {
   epsilon = ep;
@@ -69,14 +71,18 @@ export var UnitTester = class UnitTester {
 
   // ........................................................................
   test(lineNum, input, expected) {
-    var caller, doDebug, err, errMsg, got, ident, j, lCallers, lMatches, len, stackTrace, testLineNum, whichAvaTest;
+    var _, caller, doDebug, err, errMsg, got, ident, j, lCallers, lMatches, len, lineNumStr, prefix, stackTrace, testLineNum, whichAvaTest;
     if (isString(lineNum)) {
-      if (lMatches = lineNum.match(/(\d+)$/)) {
-        lineNum = parseInt(lMatches[1], 10);
+      if (lMatches = lineNum.match(/^(.*)(\d+)$/)) {
+        [_, prefix, lineNumStr] = lMatches;
+        lineNum = this.getLineNum(parseInt(lineNumStr, 10));
       } else {
         throw new Error(`test(): Invalid line number: ${lineNum}`);
       }
-    } else if (!isInteger(lineNum)) {
+    } else if (isInteger(lineNum)) {
+      // --- test names must be unique, getLineNum() ensures that
+      lineNum = this.getLineNum(lineNum);
+    } else {
       throw new Error(`test(): Invalid line number: ${lineNum}`);
     }
     this.label = `line ${lineNum}`;
@@ -142,8 +148,6 @@ export var UnitTester = class UnitTester {
     // --- We need to save this here because in the tests themselves,
     //     'this' won't be correct
     whichAvaTest = this.whichAvaTest;
-    // --- test names must be unique, getLineNum() ensures that
-    lineNum = this.getLineNum(lineNum);
     ident = this.label;
     if (this.source) {
       ident += ` in ${this.source}`;

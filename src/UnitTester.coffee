@@ -4,8 +4,8 @@ import test from 'ava'
 import {
 	undef, pass, isString, isFunction, isInteger,
 	} from '@jdeighan/base-utils/utils'
+import {suppressExceptionLogging} from '@jdeighan/base-utils/exceptions'
 import {assert, haltOnError} from '@jdeighan/base-utils'
-import {setLogger} from '@jdeighan/base-utils/log'
 
 import {
 	normalize, super_normalize,
@@ -285,15 +285,14 @@ export class UnitTester
 		assert isFunction(func), "UnitTester: fails requires a function"
 
 		# --- Turn off logging errors while checking for failure
-		saveHalt = haltOnError false          # turn off halting on error
-		saveLogger = setLogger (x) => pass()  # turn off logging
+		saveHalt = haltOnError false    # turn off halting on error
+		suppressExceptionLogging()      # turn off exception logging
 		try
 			func()
 			ok = true
 		catch err
 			ok = false
 		haltOnError saveHalt
-		setLogger saveLogger
 
 		@whichTest = 'fails'
 		@whichAvaTest = 'falsy'

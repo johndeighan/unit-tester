@@ -15,13 +15,13 @@ import {
 } from '@jdeighan/base-utils/utils';
 
 import {
+  suppressExceptionLogging
+} from '@jdeighan/base-utils/exceptions';
+
+import {
   assert,
   haltOnError
 } from '@jdeighan/base-utils';
-
-import {
-  setLogger
-} from '@jdeighan/base-utils/log';
 
 import {
   normalize,
@@ -273,14 +273,12 @@ export var UnitTester = class UnitTester {
 
   // ........................................................................
   fails(lineNum, func, expected) {
-    var err, ok, saveHalt, saveLogger;
+    var err, ok, saveHalt;
     assert(expected == null, "UnitTester: fails doesn't allow expected");
     assert(isFunction(func), "UnitTester: fails requires a function");
     // --- Turn off logging errors while checking for failure
     saveHalt = haltOnError(false); // turn off halting on error
-    saveLogger = setLogger((x) => {
-      return pass(); // turn off logging
-    });
+    suppressExceptionLogging(); // turn off exception logging
     try {
       func();
       ok = true;
@@ -289,7 +287,6 @@ export var UnitTester = class UnitTester {
       ok = false;
     }
     haltOnError(saveHalt);
-    setLogger(saveLogger);
     this.whichTest = 'fails';
     this.whichAvaTest = 'falsy';
     this.test(lineNum, ok);

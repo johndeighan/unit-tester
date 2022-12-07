@@ -11,6 +11,18 @@ import {
 	normalize, super_normalize,
 	} from '@jdeighan/unit-tester/utils'
 
+# --- Test methods:
+#        equal     - checks for deep equality
+#        notequal  - not deeply equal
+#        fails     - pass in a function
+#        succeeds  - pass in a function
+#        truthy
+#        falsy
+#        is        - strict equality
+#        not       - not strictly equal
+#        like      - same value for matching keys, unmatched keys ignored
+#        unlike
+
 # --- These are currently part of coffee-utils
 #     But should probably be moved to a lower level library
 #     We don't want to import coffee-utils anymore, so for now

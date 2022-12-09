@@ -1,6 +1,6 @@
 {
 	"name": "@jdeighan/unit-tester",
-	"version": "2.0.71",
+	"version": "3.0.0",
 	"type": "module",
 	"description": "A unit testing framework",
 	"exports": {

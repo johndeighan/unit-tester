@@ -1,6 +1,8 @@
 # UnitTester.test.coffee
 
-import {UnitTester, UnitTesterNorm, utest} from '@jdeighan/unit-tester'
+import {
+	UnitTester, UnitTesterNorm, utest,
+	} from '@jdeighan/unit-tester'
 
 `const undef = undefined`
 

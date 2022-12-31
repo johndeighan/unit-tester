@@ -1,11 +1,13 @@
 # UnitTester.coffee
 
 import test from 'ava'
+
 import {
 	undef, pass, isString, isFunction, isInteger,
-	} from '@jdeighan/base-utils/utils'
-import {suppressExceptionLogging} from '@jdeighan/base-utils/exceptions'
-import {assert, haltOnError} from '@jdeighan/base-utils'
+	} from '@jdeighan/base-utils'
+import {
+	assert, haltOnError, suppressExceptionLogging,
+	} from '@jdeighan/base-utils/exceptions'
 
 import {
 	normalize, super_normalize,

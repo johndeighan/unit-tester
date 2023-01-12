@@ -23,7 +23,7 @@
 	"author": "John Deighan",
 	"license": "MIT",
 	"dependencies": {
-		"@jdeighan/base-utils": "^4.0.6",
+		"@jdeighan/base-utils": "^4.0.7",
 		"ava": "^4.3.3",
 		"coffeescript": "^2.7.0"
 	}

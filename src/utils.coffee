@@ -1,5 +1,7 @@
 # utils.coffee
 
+import {toArray, nonEmpty} from '@jdeighan/base-utils'
+
 # ---------------------------------------------------------------------------
 
 export normalize = (block) ->
@@ -7,16 +9,16 @@ export normalize = (block) ->
 	if (typeof block != 'string')
 		return block
 
-	# --- Remove leading and trailing whitespace
-	#     Convert all whitespace to single space character
-	#     Remove empty lines
+	# --- Remove blank lines
+	#     In remaining lines:
+	#        - Remove leading and trailing whitespace
+	#        - Convert all whitespace to single space character
 
 	lLines = []
-	for line in block.split(/\r?\n/)
-		line = line.trim()
-		line = line.replace(/\s+/g, ' ')
-		if ! line.match(/^\s*$/)
-			lLines.push line
+	for line in toArray(block)
+		line = line.trim()  # remove leading/trailing whitespace
+		if nonEmpty(line)
+			lLines.push line.replace(/\s+/g, ' ')
 	return lLines.join('\n')
 
 # ---------------------------------------------------------------------------

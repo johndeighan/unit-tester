@@ -57,21 +57,40 @@ getTestName = (lineNum) ->
 
 export class JSTester
 
-	# --- designed to override
-	keysToRemove: () ->
+	keysToRemove: () ->   # --- designed to override
 
 		return ['start','end','raw']
 
-	# --- designed to override
-	acornOpts: () ->
+	# ........................................................................
+
+
+	acornOpts: () ->   # --- designed to override
 
 		return {ecmaVersion: 'latest'}
+
+	# ........................................................................
+
+	transformValue: (input) ->
+
+		return input
+
+	# ........................................................................
+
+	transformExpected: (input) ->
+
+		return input
+
+	# ........................................................................
 
 	equal: (lineNum, js1, js2) ->
 
 		testName = getTestName(lineNum)
-		ast1 = removeKeys(parse(js1, @acornOpts()), @keysToRemove())
-		ast2 = removeKeys(parse(js2, @acornOpts()), @keysToRemove())
+		js1 = @transformValue(js1)
+		js2 = @transformExpected(js2)
+		hOpts = @acornOpts()
+		lKeys = @keysToRemove()
+		ast1 = removeKeys(parse(js1, hOpts), lKeys)
+		ast2 = removeKeys(parse(js2, hOpts), lKeys)
 		test testName, (t) -> t.deepEqual(ast1, ast2)
 		return
 

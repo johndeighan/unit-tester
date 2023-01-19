@@ -5,7 +5,8 @@ import {
 } from '@jdeighan/base-utils';
 
 import {
-  jstester
+  jstester,
+  JSTester
 } from '@jdeighan/unit-tester';
 
 // ---------------------------------------------------------------------------
@@ -39,3 +40,21 @@ jstester.equal(47, `let x = 42;
 if ((x == 42)) {
 	console.log('this', undef);
 	}`, `let x=42;if(x==42){console.log("this",undef);}`);
+
+// ---------------------------------------------------------------------------
+// Test subclassing JSTester
+(function() {
+  var MyTester, tester;
+  MyTester = class MyTester extends JSTester {
+    transformValue(js) {
+      return js.replace('AUTHOR', 'John Deighan');
+    }
+
+  };
+  tester = new MyTester();
+  // ..........................................................
+  return tester.equal(69, `let x = 42;
+if ((x == 42)) {
+	console.log('this', 'AUTHOR');
+	}`, `let x=42;if(x==42){console.log("this","John Deighan");}`);
+})();

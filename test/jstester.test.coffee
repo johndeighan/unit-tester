@@ -1,7 +1,7 @@
 # jstester.test.coffee
 
 import {undef} from '@jdeighan/base-utils'
-import {jstester} from '@jdeighan/unit-tester'
+import {jstester, JSTester} from '@jdeighan/unit-tester'
 
 # ---------------------------------------------------------------------------
 
@@ -52,3 +52,27 @@ jstester.equal 47, """
 	""", """
 	let x=42;if(x==42){console.log("this",undef);}
 	"""
+
+# ---------------------------------------------------------------------------
+# Test subclassing JSTester
+
+(() ->
+
+	class MyTester extends JSTester
+		transformValue: (js) ->
+			return js.replace('AUTHOR', 'John Deighan')
+
+	tester = new MyTester()
+
+	# ..........................................................
+
+	tester.equal 69, """
+		let x = 42;
+		if ((x == 42)) {
+			console.log('this', 'AUTHOR');
+			}
+		""", """
+		let x=42;if(x==42){console.log("this","John Deighan");}
+		"""
+
+	)()

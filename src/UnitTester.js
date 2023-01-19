@@ -69,23 +69,37 @@ getTestName = function(lineNum) {
 
 // ---------------------------------------------------------------------------
 export var JSTester = class JSTester {
-  // --- designed to override
-  keysToRemove() {
+  keysToRemove() { // --- designed to override
     return ['start', 'end', 'raw'];
   }
 
-  // --- designed to override
-  acornOpts() {
+  // ........................................................................
+  acornOpts() { // --- designed to override
     return {
       ecmaVersion: 'latest'
     };
   }
 
+  // ........................................................................
+  transformValue(input) {
+    return input;
+  }
+
+  // ........................................................................
+  transformExpected(input) {
+    return input;
+  }
+
+  // ........................................................................
   equal(lineNum, js1, js2) {
-    var ast1, ast2, testName;
+    var ast1, ast2, hOpts, lKeys, testName;
     testName = getTestName(lineNum);
-    ast1 = removeKeys(parse(js1, this.acornOpts()), this.keysToRemove());
-    ast2 = removeKeys(parse(js2, this.acornOpts()), this.keysToRemove());
+    js1 = this.transformValue(js1);
+    js2 = this.transformExpected(js2);
+    hOpts = this.acornOpts();
+    lKeys = this.keysToRemove();
+    ast1 = removeKeys(parse(js1, hOpts), lKeys);
+    ast2 = removeKeys(parse(js2, hOpts), lKeys);
     test(testName, function(t) {
       return t.deepEqual(ast1, ast2);
     });

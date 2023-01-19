@@ -1,9 +1,10 @@
 # UnitTester.coffee
 
 import test from 'ava'
+import {parse} from 'acorn'
 
 import {
-	undef, pass, isString, isFunction, isInteger,
+	undef, pass, isString, isFunction, isInteger, removeKeys,
 	} from '@jdeighan/base-utils'
 import {
 	assert, haltOnError, suppressExceptionLogging,
@@ -39,6 +40,40 @@ export setEpsilon = (ep=0.0001) ->
 
 	epsilon = ep
 	return
+
+# ---------------------------------------------------------------------------
+
+hUsedLineNums = {}
+
+getTestName = (lineNum) ->
+
+	# --- get a unique line number
+	while hUsedLineNums[lineNum]
+		lineNum += 1000
+	hUsedLineNums[lineNum] = true
+	return "test #{lineNum}"
+
+# ---------------------------------------------------------------------------
+
+export class JSTester
+
+	# --- designed to override
+	keysToRemove: () ->
+
+		return ['start','end','raw']
+
+	# --- designed to override
+	acornOpts: () ->
+
+		return {ecmaVersion: 'latest'}
+
+	equal: (lineNum, js1, js2) ->
+
+		testName = getTestName(lineNum)
+		ast1 = removeKeys(parse(js1, @acornOpts()), @keysToRemove())
+		ast2 = removeKeys(parse(js2, @acornOpts()), @keysToRemove())
+		test testName, (t) -> t.deepEqual(ast1, ast2)
+		return
 
 # ---------------------------------------------------------------------------
 
@@ -384,3 +419,4 @@ export mapInput =(input, expected) ->
 # ---------------------------------------------------------------------------
 
 export utest = new UnitTester()
+export jstester = new JSTester()

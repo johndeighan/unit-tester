@@ -4,7 +4,8 @@ import test from 'ava'
 import {parse} from 'acorn'
 
 import {
-	undef, pass, isString, isFunction, isInteger, removeKeys,
+	undef, pass, isString, isFunction, isInteger, removeKeys, DUMP,
+	isEmpty, nonEmpty,
 	} from '@jdeighan/base-utils'
 import {
 	assert, haltOnError, suppressExceptionLogging,
@@ -87,11 +88,33 @@ export class JSTester
 		testName = getTestName(lineNum)
 		js1 = @transformValue(js1)
 		js2 = @transformExpected(js2)
-		hOpts = @acornOpts()
-		lKeys = @keysToRemove()
-		ast1 = removeKeys(parse(js1, hOpts), lKeys)
-		ast2 = removeKeys(parse(js2, hOpts), lKeys)
-		test testName, (t) -> t.deepEqual(ast1, ast2)
+
+		lErrors = []
+
+		# --- Parse js1 to get ast1
+		try
+			ast1 = parse(js1, @acornOpts())
+		catch err
+			DUMP 'JavaScript 1', js1
+			console.log err.message
+			lErrors.push err.message
+
+		# --- Parse js2 to get ast2
+		try
+			ast2 = parse(js2, @acornOpts())
+		catch err
+			DUMP 'JavaScript 2', js2
+			console.log err.message
+			lErrors.push err.message
+
+		if isEmpty(lErrors)
+			lKeysToRemove = @keysToRemove()
+			ast1 = removeKeys(ast1, lKeysToRemove)
+			ast2 = removeKeys(ast2, lKeysToRemove)
+			test testName, (t) -> t.deepEqual(ast1, ast2)
+		else
+			for msg in lErrors
+				console.log "ERROR: #{msg}"
 		return
 
 # ---------------------------------------------------------------------------

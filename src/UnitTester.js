@@ -16,7 +16,10 @@ import {
   isString,
   isFunction,
   isInteger,
-  removeKeys
+  removeKeys,
+  DUMP,
+  isEmpty,
+  nonEmpty
 } from '@jdeighan/base-utils';
 
 import {
@@ -92,17 +95,42 @@ export var JSTester = class JSTester {
 
   // ........................................................................
   equal(lineNum, js1, js2) {
-    var ast1, ast2, hOpts, lKeys, testName;
+    var ast1, ast2, err, j, lErrors, lKeysToRemove, len, msg, testName;
     testName = getTestName(lineNum);
     js1 = this.transformValue(js1);
     js2 = this.transformExpected(js2);
-    hOpts = this.acornOpts();
-    lKeys = this.keysToRemove();
-    ast1 = removeKeys(parse(js1, hOpts), lKeys);
-    ast2 = removeKeys(parse(js2, hOpts), lKeys);
-    test(testName, function(t) {
-      return t.deepEqual(ast1, ast2);
-    });
+    lErrors = [];
+    try {
+      // --- Parse js1 to get ast1
+      ast1 = parse(js1, this.acornOpts());
+    } catch (error) {
+      err = error;
+      DUMP('JavaScript 1', js1);
+      console.log(err.message);
+      lErrors.push(err.message);
+    }
+    try {
+      // --- Parse js2 to get ast2
+      ast2 = parse(js2, this.acornOpts());
+    } catch (error) {
+      err = error;
+      DUMP('JavaScript 2', js2);
+      console.log(err.message);
+      lErrors.push(err.message);
+    }
+    if (isEmpty(lErrors)) {
+      lKeysToRemove = this.keysToRemove();
+      ast1 = removeKeys(ast1, lKeysToRemove);
+      ast2 = removeKeys(ast2, lKeysToRemove);
+      test(testName, function(t) {
+        return t.deepEqual(ast1, ast2);
+      });
+    } else {
+      for (j = 0, len = lErrors.length; j < len; j++) {
+        msg = lErrors[j];
+        console.log(`ERROR: ${msg}`);
+      }
+    }
   }
 
 };

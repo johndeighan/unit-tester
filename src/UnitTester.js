@@ -105,8 +105,9 @@ export var JSTester = class JSTester {
     } catch (error) {
       err = error;
       DUMP('JavaScript 1', js1);
-      console.log(err.message);
+      console.log(`ERROR in JSTester: ${err.message}`);
       lErrors.push(err.message);
+      throw err;
     }
     try {
       // --- normalize js2
@@ -114,8 +115,9 @@ export var JSTester = class JSTester {
     } catch (error) {
       err = error;
       DUMP('JavaScript 2', js2);
-      console.log(err.message);
+      console.log(`ERROR in JSTester: ${err.message}`);
       lErrors.push(err.message);
+      throw err;
     }
     if (isEmpty(lErrors)) {
       test(testName, function(t) {

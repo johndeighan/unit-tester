@@ -91,16 +91,18 @@ export class JSTester
 			norm1 = @normalize(js1)
 		catch err
 			DUMP 'JavaScript 1', js1
-			console.log err.message
+			console.log "ERROR in JSTester: #{err.message}"
 			lErrors.push err.message
+			throw err
 
 		# --- normalize js2
 		try
 			norm2 = @normalize(js2)
 		catch err
 			DUMP 'JavaScript 2', js2
-			console.log err.message
+			console.log "ERROR in JSTester: #{err.message}"
 			lErrors.push err.message
+			throw err
 
 		if isEmpty(lErrors)
 			test testName, (t) -> t.is(norm1, norm2)

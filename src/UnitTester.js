@@ -85,11 +85,18 @@ export var JSTester = class JSTester {
 
   // ........................................................................
   normalize(input) {
-    var result;
-    result = prettier.format(input, {
-      parser: 'flow'
-    });
-    return result;
+    var err, result;
+    try {
+      result = prettier.format(input, {
+        parser: 'flow'
+      });
+      return result;
+    } catch (error) {
+      err = error;
+      console.log("prettier failed");
+      DUMP('JavaScript', input);
+      throw err;
+    }
   }
 
   // ........................................................................
@@ -105,7 +112,7 @@ export var JSTester = class JSTester {
     } catch (error) {
       err = error;
       DUMP('JavaScript 1', js1);
-      console.log(`ERROR in JSTester: ${err.message}`);
+      console.log(`ERROR in JSTester 1: ${err.message}`);
       lErrors.push(err.message);
       throw err;
     }
@@ -115,7 +122,7 @@ export var JSTester = class JSTester {
     } catch (error) {
       err = error;
       DUMP('JavaScript 2', js2);
-      console.log(`ERROR in JSTester: ${err.message}`);
+      console.log(`ERROR in JSTester 2: ${err.message}`);
       lErrors.push(err.message);
       throw err;
     }

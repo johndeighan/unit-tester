@@ -73,8 +73,13 @@ export class JSTester
 
 	normalize: (input) ->
 
-		result = prettier.format(input, {parser: 'flow'})
-		return result
+		try
+			result = prettier.format(input, {parser: 'flow'})
+			return result
+		catch err
+			console.log "prettier failed"
+			DUMP 'JavaScript', input
+			throw err
 
 	# ........................................................................
 
@@ -91,7 +96,7 @@ export class JSTester
 			norm1 = @normalize(js1)
 		catch err
 			DUMP 'JavaScript 1', js1
-			console.log "ERROR in JSTester: #{err.message}"
+			console.log "ERROR in JSTester 1: #{err.message}"
 			lErrors.push err.message
 			throw err
 
@@ -100,7 +105,7 @@ export class JSTester
 			norm2 = @normalize(js2)
 		catch err
 			DUMP 'JavaScript 2', js2
-			console.log "ERROR in JSTester: #{err.message}"
+			console.log "ERROR in JSTester 2: #{err.message}"
 			lErrors.push err.message
 			throw err
 

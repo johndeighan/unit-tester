@@ -10,6 +10,8 @@ import {
   parse
 } from 'acorn';
 
+import prettier from 'prettier';
+
 import {
   undef,
   pass,
@@ -72,18 +74,6 @@ getTestName = function(lineNum) {
 
 // ---------------------------------------------------------------------------
 export var JSTester = class JSTester {
-  keysToRemove() { // --- designed to override
-    return ['start', 'end', 'raw'];
-  }
-
-  // ........................................................................
-  acornOpts() { // --- designed to override
-    return {
-      ecmaVersion: 'latest'
-    };
-  }
-
-  // ........................................................................
   transformValue(input) {
     return input;
   }
@@ -94,15 +84,24 @@ export var JSTester = class JSTester {
   }
 
   // ........................................................................
+  normalize(input) {
+    var result;
+    result = prettier.format(input, {
+      parser: 'flow'
+    });
+    return result;
+  }
+
+  // ........................................................................
   equal(lineNum, js1, js2) {
-    var ast1, ast2, err, j, lErrors, lKeysToRemove, len, msg, testName;
+    var err, j, lErrors, len, msg, norm1, norm2, testName;
     testName = getTestName(lineNum);
     js1 = this.transformValue(js1);
     js2 = this.transformExpected(js2);
     lErrors = [];
     try {
-      // --- Parse js1 to get ast1
-      ast1 = parse(js1, this.acornOpts());
+      // --- normalize js1
+      norm1 = this.normalize(js1);
     } catch (error) {
       err = error;
       DUMP('JavaScript 1', js1);
@@ -110,8 +109,8 @@ export var JSTester = class JSTester {
       lErrors.push(err.message);
     }
     try {
-      // --- Parse js2 to get ast2
-      ast2 = parse(js2, this.acornOpts());
+      // --- normalize js2
+      norm2 = this.normalize(js2);
     } catch (error) {
       err = error;
       DUMP('JavaScript 2', js2);
@@ -119,11 +118,8 @@ export var JSTester = class JSTester {
       lErrors.push(err.message);
     }
     if (isEmpty(lErrors)) {
-      lKeysToRemove = this.keysToRemove();
-      ast1 = removeKeys(ast1, lKeysToRemove);
-      ast2 = removeKeys(ast2, lKeysToRemove);
       test(testName, function(t) {
-        return t.deepEqual(ast1, ast2);
+        return t.is(norm1, norm2);
       });
     } else {
       for (j = 0, len = lErrors.length; j < len; j++) {

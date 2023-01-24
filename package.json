@@ -23,9 +23,10 @@
 	"author": "John Deighan",
 	"license": "MIT",
 	"dependencies": {
-		"@jdeighan/base-utils": "^4.0.12",
-		"acorn": "^8.8.1",
+		"@jdeighan/base-utils": "^4.0.13",
+		"acorn": "^8.8.2",
 		"ava": "^4.3.3",
-		"coffeescript": "^2.7.0"
+		"coffeescript": "^2.7.0",
+		"prettier": "^2.8.3"
 	}
 }

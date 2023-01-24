@@ -2,6 +2,7 @@
 
 import test from 'ava'
 import {parse} from 'acorn'
+import prettier from 'prettier'
 
 import {
 	undef, pass, isString, isFunction, isInteger, removeKeys, DUMP,
@@ -58,19 +59,6 @@ getTestName = (lineNum) ->
 
 export class JSTester
 
-	keysToRemove: () ->   # --- designed to override
-
-		return ['start','end','raw']
-
-	# ........................................................................
-
-
-	acornOpts: () ->   # --- designed to override
-
-		return {ecmaVersion: 'latest'}
-
-	# ........................................................................
-
 	transformValue: (input) ->
 
 		return input
@@ -83,6 +71,13 @@ export class JSTester
 
 	# ........................................................................
 
+	normalize: (input) ->
+
+		result = prettier.format(input, {parser: 'flow'})
+		return result
+
+	# ........................................................................
+
 	equal: (lineNum, js1, js2) ->
 
 		testName = getTestName(lineNum)
@@ -91,27 +86,24 @@ export class JSTester
 
 		lErrors = []
 
-		# --- Parse js1 to get ast1
+		# --- normalize js1
 		try
-			ast1 = parse(js1, @acornOpts())
+			norm1 = @normalize(js1)
 		catch err
 			DUMP 'JavaScript 1', js1
 			console.log err.message
 			lErrors.push err.message
 
-		# --- Parse js2 to get ast2
+		# --- normalize js2
 		try
-			ast2 = parse(js2, @acornOpts())
+			norm2 = @normalize(js2)
 		catch err
 			DUMP 'JavaScript 2', js2
 			console.log err.message
 			lErrors.push err.message
 
 		if isEmpty(lErrors)
-			lKeysToRemove = @keysToRemove()
-			ast1 = removeKeys(ast1, lKeysToRemove)
-			ast2 = removeKeys(ast2, lKeysToRemove)
-			test testName, (t) -> t.deepEqual(ast1, ast2)
+			test testName, (t) -> t.is(norm1, norm2)
 		else
 			for msg in lErrors
 				console.log "ERROR: #{msg}"

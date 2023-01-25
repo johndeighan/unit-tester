@@ -4,6 +4,18 @@ import {toArray, nonEmpty} from '@jdeighan/base-utils'
 
 # ---------------------------------------------------------------------------
 
+hUsedLineNums = {}
+
+export getTestName = (lineNum) ->
+
+	# --- get a unique line number
+	while hUsedLineNums[lineNum]
+		lineNum += 1000
+	hUsedLineNums[lineNum] = true
+	return "test #{lineNum}"
+
+# ---------------------------------------------------------------------------
+
 export normalize = (block) ->
 
 	if (typeof block != 'string')

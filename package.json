@@ -5,6 +5,7 @@
 	"description": "A unit testing framework",
 	"exports": {
 		".": "./src/UnitTester.js",
+		"./js": "./src/JSTester.js",
 		"./utils": "./src/utils.js",
 		"./package.json": "./package.json"
 	},

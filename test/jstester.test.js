@@ -7,7 +7,7 @@ import {
 import {
   jstester,
   JSTester
-} from '@jdeighan/unit-tester';
+} from '@jdeighan/unit-tester/js';
 
 // ---------------------------------------------------------------------------
 jstester.equal(8, `let x = 42;`, `let x = 42;`);

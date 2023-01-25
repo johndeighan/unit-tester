@@ -1,7 +1,7 @@
 # jstester.test.coffee
 
 import {undef} from '@jdeighan/base-utils'
-import {jstester, JSTester} from '@jdeighan/unit-tester'
+import {jstester, JSTester} from '@jdeighan/unit-tester/js'
 
 # ---------------------------------------------------------------------------
 

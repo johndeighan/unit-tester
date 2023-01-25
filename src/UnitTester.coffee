@@ -1,8 +1,6 @@
 # UnitTester.coffee
 
 import test from 'ava'
-import {parse} from 'acorn'
-import prettier from 'prettier'
 
 import {
 	undef, pass, isString, isFunction, isInteger, removeKeys, DUMP,
@@ -13,7 +11,7 @@ import {
 	} from '@jdeighan/base-utils/exceptions'
 
 import {
-	normalize, super_normalize,
+	getTestName, normalize, super_normalize,
 	} from '@jdeighan/unit-tester/utils'
 
 # --- Test methods:
@@ -42,79 +40,6 @@ export setEpsilon = (ep=0.0001) ->
 
 	epsilon = ep
 	return
-
-# ---------------------------------------------------------------------------
-
-hUsedLineNums = {}
-
-getTestName = (lineNum) ->
-
-	# --- get a unique line number
-	while hUsedLineNums[lineNum]
-		lineNum += 1000
-	hUsedLineNums[lineNum] = true
-	return "test #{lineNum}"
-
-# ---------------------------------------------------------------------------
-
-export class JSTester
-
-	transformValue: (input) ->
-
-		return input
-
-	# ........................................................................
-
-	transformExpected: (input) ->
-
-		return input
-
-	# ........................................................................
-
-	normalize: (input) ->
-
-		try
-			result = prettier.format(input, {parser: 'flow'})
-			return result
-		catch err
-			console.log "prettier failed"
-			DUMP 'JavaScript', input
-			throw err
-
-	# ........................................................................
-
-	equal: (lineNum, js1, js2) ->
-
-		testName = getTestName(lineNum)
-		js1 = @transformValue(js1)
-		js2 = @transformExpected(js2)
-
-		lErrors = []
-
-		# --- normalize js1
-		try
-			norm1 = @normalize(js1)
-		catch err
-			DUMP 'JavaScript 1', js1
-			console.log "ERROR in JSTester 1: #{err.message}"
-			lErrors.push err.message
-			throw err
-
-		# --- normalize js2
-		try
-			norm2 = @normalize(js2)
-		catch err
-			DUMP 'JavaScript 2', js2
-			console.log "ERROR in JSTester 2: #{err.message}"
-			lErrors.push err.message
-			throw err
-
-		if isEmpty(lErrors)
-			test testName, (t) -> t.is(norm1, norm2)
-		else
-			for msg in lErrors
-				console.log "ERROR: #{msg}"
-		return
 
 # ---------------------------------------------------------------------------
 
@@ -460,4 +385,3 @@ export mapInput =(input, expected) ->
 # ---------------------------------------------------------------------------
 
 export utest = new UnitTester()
-export jstester = new JSTester()

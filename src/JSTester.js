@@ -12,6 +12,12 @@ import {
 } from '@jdeighan/base-utils';
 
 import {
+  dbgEnter,
+  dbgReturn,
+  dbg
+} from '@jdeighan/base-utils/debug';
+
+import {
   assert
 } from '@jdeighan/base-utils/exceptions';
 
@@ -48,12 +54,22 @@ export var JSTester = class JSTester {
 
   // ........................................................................
   equal(lineNum, js1, js2) {
-    var err, norm1, norm2;
-    js1 = this.transformValue(js1);
-    js2 = this.transformExpected(js2);
+    var err, js1_trans, js2_trans, norm1, norm2;
+    dbgEnter('equal', lineNum, js1, js2);
+    js1_trans = this.transformValue(js1);
+    if (js1_trans !== js1) {
+      dbg("js1 transformed", js1_trans);
+    }
+    js2_trans = this.transformExpected(js2);
+    if (js2_trans !== js2) {
+      dbg("js2 transformed", js2_trans);
+    }
     try {
       // --- normalize js1
-      norm1 = this.normalize(js1);
+      norm1 = this.normalize(js1_trans);
+      if (norm1 !== js1_trans) {
+        dbg("js1 normalized", norm1);
+      }
     } catch (error) {
       err = error;
       DUMP('JavaScript 1', js1);
@@ -62,7 +78,10 @@ export var JSTester = class JSTester {
     }
     try {
       // --- normalize js2
-      norm2 = this.normalize(js2);
+      norm2 = this.normalize(js2_trans);
+      if (norm2 !== js2_trans) {
+        dbg("js2 normalized", norm2);
+      }
     } catch (error) {
       err = error;
       DUMP('JavaScript 2', js2);
@@ -72,6 +91,7 @@ export var JSTester = class JSTester {
     test(getTestName(lineNum), function(t) {
       return t.is(norm1, norm2);
     });
+    dbgReturn('equal');
   }
 
 };

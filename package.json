@@ -11,7 +11,7 @@
 	},
 	"scripts": {
 		"build": "cls && coffee -c .",
-		"test": "npm run build && ava ./test/*.test.js && git status",
+		"test": "npm run build && npx ava ./test/*.test.js && git status",
 		"publish": "npm publish --access=public"
 	},
 	"ava": {
@@ -24,9 +24,9 @@
 	"author": "John Deighan",
 	"license": "MIT",
 	"dependencies": {
-		"@jdeighan/base-utils": "^4.0.14",
+		"@jdeighan/base-utils": "^4.0.15",
 		"acorn": "^8.8.2",
-		"ava": "^4.3.3",
+		"ava": "^5.1.1",
 		"coffeescript": "^2.7.0",
 		"prettier": "^2.8.3"
 	}

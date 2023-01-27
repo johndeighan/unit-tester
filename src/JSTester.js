@@ -41,9 +41,10 @@ export var JSTester = class JSTester {
     var err, result;
     try {
       result = prettier.format(js, {
-        parser: 'flow'
+        parser: 'flow',
+        useTabs: true
       });
-      return result;
+      return result.replace(/\n\n+/sg, "\n");
     } catch (error) {
       err = error;
       console.log("prettier failed");

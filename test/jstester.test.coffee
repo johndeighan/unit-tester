@@ -53,6 +53,18 @@ jstester.equal 47, """
 	let x=42;if(x==42){console.log("this",undef);}
 	"""
 
+jstester.equal 56, """
+	var a, b, c;
+
+	a = 42;
+
+	b = 99;
+	""", """
+	var a, b, c;
+	a = 42;
+	b = 99;
+	"""
+
 # ---------------------------------------------------------------------------
 # Test subclassing JSTester
 
@@ -66,7 +78,7 @@ jstester.equal 47, """
 
 	# ..........................................................
 
-	tester.equal 69, """
+	tester.equal 81, """
 		let x = 42;
 		if ((x == 42)) {
 			console.log('this', 'AUTHOR');

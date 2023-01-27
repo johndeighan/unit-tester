@@ -31,8 +31,11 @@ export class JSTester
 	normalize: (js) ->
 
 		try
-			result = prettier.format(js, {parser: 'flow'})
-			return result
+			result = prettier.format(js, {
+				parser: 'flow'
+				useTabs: true
+				})
+			return result.replace(/\n\n+/sg, "\n")
 		catch err
 			console.log "prettier failed"
 			DUMP 'JavaScript', js

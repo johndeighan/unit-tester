@@ -41,6 +41,14 @@ if ((x == 42)) {
 	console.log('this', undef);
 	}`, `let x=42;if(x==42){console.log("this",undef);}`);
 
+jstester.equal(56, `var a, b, c;
+
+a = 42;
+
+b = 99;`, `var a, b, c;
+a = 42;
+b = 99;`);
+
 // ---------------------------------------------------------------------------
 // Test subclassing JSTester
 (function() {
@@ -53,7 +61,7 @@ if ((x == 42)) {
   };
   tester = new MyTester();
   // ..........................................................
-  return tester.equal(69, `let x = 42;
+  return tester.equal(81, `let x = 42;
 if ((x == 42)) {
 	console.log('this', 'AUTHOR');
 	}`, `let x=42;if(x==42){console.log("this","John Deighan");}`);

@@ -4,9 +4,9 @@
 	"type": "module",
 	"description": "A unit testing framework",
 	"exports": {
-		".": "./src/UnitTester.js",
-		"./js": "./src/JSTester.js",
-		"./utils": "./src/utils.js",
+		".": "./src/lib/UnitTester.js",
+		"./js": "./src/lib/JSTester.js",
+		"./utils": "./src/lib/utils.js",
 		"./package.json": "./package.json"
 	},
 	"scripts": {

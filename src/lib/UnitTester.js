@@ -8,14 +8,15 @@ import test from 'ava';
 
 import {
   undef,
-  pass,
+  defined,
+  notdefined,
   isString,
   isFunction,
   isInteger,
-  removeKeys,
-  DUMP,
   isEmpty,
-  nonEmpty
+  nonEmpty,
+  removeKeys,
+  DUMP
 } from '@jdeighan/base-utils';
 
 import {
@@ -276,7 +277,7 @@ export var UnitTester = class UnitTester {
   // ........................................................................
   fails(lineNum, func, expected) {
     var err, ok, saveHalt;
-    assert(expected == null, "UnitTester: fails doesn't allow expected");
+    assert(notdefined(expected), "UnitTester: fails doesn't allow expected");
     assert(isFunction(func), "UnitTester: fails requires a function");
     // --- Turn off logging errors while checking for failure
     saveHalt = haltOnError(false); // turn off halting on error

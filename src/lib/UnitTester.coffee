@@ -3,8 +3,8 @@
 import test from 'ava'
 
 import {
-	undef, pass, isString, isFunction, isInteger, removeKeys, DUMP,
-	isEmpty, nonEmpty,
+	undef, defined, notdefined, isString, isFunction, isInteger,
+	isEmpty, nonEmpty, removeKeys, DUMP,
 	} from '@jdeighan/base-utils'
 import {
 	assert, haltOnError, suppressExceptionLogging,
@@ -284,7 +284,7 @@ export class UnitTester
 
 	fails: (lineNum, func, expected) ->
 
-		assert ! expected?, "UnitTester: fails doesn't allow expected"
+		assert notdefined(expected), "UnitTester: fails doesn't allow expected"
 		assert isFunction(func), "UnitTester: fails requires a function"
 
 		# --- Turn off logging errors while checking for failure

@@ -37,13 +37,13 @@ export var JSTester = class JSTester {
   }
 
   // ........................................................................
-  normalize(js) {
+  async normalize(js) {
     var err, result;
     try {
-      result = prettier.format(js, {
+      result = (await prettier.format(js, {
         parser: 'flow',
         useTabs: true
-      });
+      }));
       return result.replace(/\n\n+/sg, "\n");
     } catch (error) {
       err = error;
@@ -54,7 +54,7 @@ export var JSTester = class JSTester {
   }
 
   // ........................................................................
-  equal(lineNum, js1, js2) {
+  async equal(lineNum, js1, js2) {
     var err, js1_trans, js2_trans, norm1, norm2;
     dbgEnter('equal', lineNum, js1, js2);
     js1_trans = this.transformValue(js1);
@@ -67,7 +67,7 @@ export var JSTester = class JSTester {
     }
     try {
       // --- normalize js1
-      norm1 = this.normalize(js1_trans);
+      norm1 = (await this.normalize(js1_trans));
       if (norm1 !== js1_trans) {
         dbg("js1 normalized", norm1);
       }
@@ -79,7 +79,7 @@ export var JSTester = class JSTester {
     }
     try {
       // --- normalize js2
-      norm2 = this.normalize(js2_trans);
+      norm2 = (await this.normalize(js2_trans));
       if (norm2 !== js2_trans) {
         dbg("js2 normalized", norm2);
       }

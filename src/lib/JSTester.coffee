@@ -31,7 +31,7 @@ export class JSTester
 	normalize: (js) ->
 
 		try
-			result = prettier.format(js, {
+			result = await prettier.format(js, {
 				parser: 'flow'
 				useTabs: true
 				})
@@ -57,7 +57,7 @@ export class JSTester
 
 		# --- normalize js1
 		try
-			norm1 = @normalize(js1_trans)
+			norm1 = await @normalize(js1_trans)
 			if (norm1 != js1_trans)
 				dbg "js1 normalized", norm1
 		catch err
@@ -67,7 +67,7 @@ export class JSTester
 
 		# --- normalize js2
 		try
-			norm2 = @normalize(js2_trans)
+			norm2 = await @normalize(js2_trans)
 			if (norm2 != js2_trans)
 				dbg "js2 normalized", norm2
 		catch err

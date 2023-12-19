@@ -65,3 +65,5 @@ snorm = super_normalize(block);
 utest.equal(89, norm, "abc def\nabc def");
 
 utest.equal(90, snorm, "abc def abc def");
+
+//# sourceMappingURL=utils.test.js.map

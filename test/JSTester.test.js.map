@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "JSTester.test.js",
+  "sourceRoot": "..\\",
+  "sources": [
+    "test\\JSTester.test.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAsB;AAEtB,OAAA;EAAQ,KAAR;CAAA,MAAA;;AACA,OAAA;EAAQ,QAAR;EAAkB,QAAlB;CAAA,MAAA,2BAHsB;;;AAOtB,QAAQ,CAAC,KAAT,CAAe,CAAf,EAAkB,CAAA,WAAA,CAAlB,EAEM,CAAA,WAAA,CAFN;;AAMA,QAAQ,CAAC,KAAT,CAAe,EAAf,EAAmB,CAAA,WAAA,CAAnB,EAEM,CAAA;;;;CAAA,CAFN,EAbsB;;;;;;;;;AA+BtB,QAAQ,CAAC,KAAT,CAAe,EAAf,EAAmB,CAAA;;;EAAA,CAAnB,EAKM,CAAA;;;;;;GAAA,CALN;;AAeA,QAAQ,CAAC,KAAT,CAAe,EAAf,EAAmB,CAAA;;;EAAA,CAAnB,EAKM,CAAA,8CAAA,CALN;;AASA,QAAQ,CAAC,KAAT,CAAe,EAAf,EAAmB,CAAA;;;;OAAA,CAAnB,EAMM,CAAA;;OAAA,CANN,EAvDsB;;;;AAsEtB,CAAC,QAAA,CAAA,CAAA;AAED,MAAA,QAAA,EAAA;EAAO,WAAN,MAAA,SAAA,QAAuB,SAAvB;IACC,cAAgB,CAAC,EAAD,CAAA;AACf,aAAO,EAAE,CAAC,OAAH,CAAW,QAAX,EAAqB,cAArB;IADQ;;EADjB;EAIA,MAAA,GAAS,IAAI,QAAJ,CAAA,EAJV;;SAQC,MAAM,CAAC,KAAP,CAAa,EAAb,EAAiB,CAAA;;;EAAA,CAAjB,EAKM,CAAA,uDAAA,CALN;AAVA,CAAD,CAAA,CAAA",
+  "sourcesContent": [
+    "# jstester.test.coffee\n\nimport {undef} from '@jdeighan/base-utils'\nimport {jstester, JSTester} from '@jdeighan/unit-tester/js'\n\n# ---------------------------------------------------------------------------\n\njstester.equal 8, \"\"\"\n\tlet x = 42;\n\t\"\"\", \"\"\"\n\tlet x = 42;\n\t\"\"\"\n\njstester.equal 14, \"\"\"\n\tlet x = 42;\n\t\"\"\", \"\"\"\n\tlet\n\tx\n\t=\n\t42\n\t;\n\t\"\"\"\n\n# --- Things we want to ignore:\n#        1. The line number something is on\n#        2. missing semicolons\n#        3. trailing commas\n#        4. the type of quote mark used for strings\n#        5. extra parentheses\n#        6. indent level\n\njstester.equal 32, \"\"\"\n\tlet x = 42;\n\tif ((x == 42)) {\n\t\tconsole.log('this', undef);\n\t\t}\n\t\"\"\", \"\"\"\n\tlet x = 42\n\t\tif (x == 42) {\n\t\t\tconsole.log(\n\t\t\t\t\"this\",\n\t\t\t\tundef,\n\t\t\t\t);\n\t\t\t}\n\t\"\"\"\n\njstester.equal 47, \"\"\"\n\tlet x = 42;\n\tif ((x == 42)) {\n\t\tconsole.log('this', undef);\n\t\t}\n\t\"\"\", \"\"\"\n\tlet x=42;if(x==42){console.log(\"this\",undef);}\n\t\"\"\"\n\njstester.equal 56, \"\"\"\n\tvar a, b, c;\n\n\ta = 42;\n\n\tb = 99;\n\t\"\"\", \"\"\"\n\tvar a, b, c;\n\ta = 42;\n\tb = 99;\n\t\"\"\"\n\n# ---------------------------------------------------------------------------\n# Test subclassing JSTester\n\n(() ->\n\n\tclass MyTester extends JSTester\n\t\ttransformValue: (js) ->\n\t\t\treturn js.replace('AUTHOR', 'John Deighan')\n\n\ttester = new MyTester()\n\n\t# ..........................................................\n\n\ttester.equal 81, \"\"\"\n\t\tlet x = 42;\n\t\tif ((x == 42)) {\n\t\t\tconsole.log('this', 'AUTHOR');\n\t\t\t}\n\t\t\"\"\", \"\"\"\n\t\tlet x=42;if(x==42){console.log(\"this\",\"John Deighan\");}\n\t\t\"\"\"\n\n\t)()\n"
+  ]
+}

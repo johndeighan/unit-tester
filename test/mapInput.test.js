@@ -91,3 +91,5 @@ utest.equal(10, mapInput([
     c: 3
   }
 ]);
+
+//# sourceMappingURL=mapInput.test.js.map

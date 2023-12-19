@@ -66,3 +66,5 @@ if ((x == 42)) {
 	console.log('this', 'AUTHOR');
 	}`, `let x=42;if(x==42){console.log("this","John Deighan");}`);
 })();
+
+//# sourceMappingURL=JSTester.test.js.map

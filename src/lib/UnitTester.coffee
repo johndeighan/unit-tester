@@ -3,12 +3,15 @@
 import test from 'ava'
 
 import {
-	undef, defined, notdefined, isString, isFunction, isInteger,
-	isEmpty, nonEmpty, removeKeys, DUMP,
+	undef, defined, notdefined, pass, oneof,
+	isString, isFunction, isNumber, isInteger,
+	isEmpty, nonEmpty, removeKeys, DUMP, OL,
 	} from '@jdeighan/base-utils'
 import {
-	assert, haltOnError, suppressExceptionLogging,
+	assert, croak, haltOnError, suppressExceptionLogging,
 	} from '@jdeighan/base-utils/exceptions'
+import {getMyOutsideCaller} from '@jdeighan/base-utils/v8-stack'
+import {dbgEnter, dbgReturn, dbg} from '@jdeighan/base-utils/debug'
 
 import {
 	getTestName, normalize, super_normalize,
@@ -33,6 +36,7 @@ import {
 
 epsilon = 0.0001
 haltOnError false
+hUsedLineNumbers = {}    # { <num> => 1, ... }
 
 # ---------------------------------------------------------------------------
 
@@ -47,7 +51,6 @@ export class UnitTester
 
 	constructor: (@source=undef) ->
 
-		@hFound = {}   # used line numbers
 		@whichAvaTest = 'deepEqual'
 		@whichTest = undef    # should be set by each test method
 		@label = 'unknown'
@@ -64,9 +67,9 @@ export class UnitTester
 				['different', 'not']
 				]
 			[myName, avaName] = testDesc
-			@addTest myName, (lineNum, input, expected=undef) ->
+			@addTest myName, (lArgs...) ->
 				@whichAvaTest = avaName
-				@test lineNum, input, expected
+				@test lArgs...
 				return
 
 	# ........................................................................
@@ -78,19 +81,50 @@ export class UnitTester
 
 	# ........................................................................
 
-	test: (lineNum, input, expected) ->
+	getCallerLineNum: () ->
 
-		if isString(lineNum)
-			if lMatches = lineNum.match(///^ (.*) (\d+) $///)
-				[_, prefix, lineNumStr] = lMatches
-				lineNum = @getLineNum(parseInt(lineNumStr, 10))
+		hNode = getMyOutsideCaller()
+		return hNode.line
+
+	# ........................................................................
+
+	test: (lArgs...) ->
+
+		dbgEnter 'test', lArgs
+		dbg 'whichTest', @whichTest
+
+		# --- NEW: lineNum can be omitted
+		#          It's missing and must be calculated if
+		#             @whichTest is 'truthy','falsy','succeeds' or 'fails'
+		#                AND #args is 1
+		#             else #args is 2
+		lineNum = input = expected = undef
+		if oneof(@whichAvaTest, 'truthy','falsy','succeeds','fails')
+			if (lArgs.length == 2)
+				[lineNum, input] = lArgs
+			else if (lArgs.length == 1)
+				[input] = lArgs
 			else
-				throw new Error("test(): Invalid line number: #{lineNum}")
-		else if isInteger(lineNum)
-			# --- test names must be unique, getLineNum() ensures that
-			lineNum = @getLineNum(lineNum)
+				croak "whichTest = #{@whichTest}, lArgs = #{OL(lArgs)}"
 		else
-			throw new Error("test(): Invalid line number: #{lineNum}")
+			if (lArgs.length == 3)
+				[lineNum, input, expected] = lArgs
+			else if (lArgs.length == 2)
+				[input, expected] = lArgs
+			else
+				croak "whichTest = #{@whichTest}, lArgs = #{OL(lArgs)}"
+
+		if notdefined(lineNum)
+			lineNum = @getCallerLineNum()
+			if notdefined(lineNum)
+				croak "getCallerLineNum() returned undef"
+
+		assert isInteger(lineNum), "lineNum must be an integer, got #{lineNum}"
+
+		# --- If lineNum has already been used, fix it
+		while hUsedLineNumbers[lineNum]
+			lineNum += 1000
+		hUsedLineNumbers[lineNum] = 1
 
 		@label = "line #{lineNum}"
 
@@ -161,21 +195,12 @@ export class UnitTester
 
 		if doDebug
 			console.log "Unit test #{lineNum} completed"
+		dbgReturn 'test'
 		return
 
 	# ........................................................................
 
 	initialize: () ->     # override to do any initialization
-
-	# ........................................................................
-
-	getLineNum: (lineNum) ->
-
-		# --- patch lineNum to avoid duplicates
-		while @hFound[lineNum]
-			lineNum += 1000
-		@hFound[lineNum] = true
-		return lineNum
 
 	# ........................................................................
 
@@ -242,11 +267,30 @@ export class UnitTester
 
 	# ........................................................................
 
-	about: (lineNum, input, expected) ->
+	getArgs: (lArgs, expectNum) ->
+
+		dbgEnter 'getArgs', lArgs, expectNum
+		if (lArgs.length == expectNum)
+			result = lArgs
+		else if (lArgs.length == expectNum - 1)
+			lineNum = @getCallerLineNum()
+			result = [lineNum, lArgs...]
+		else
+			croak "Invalid # args: #{OL(lArgs)}, #{expectNum} expected"
+		dbgReturn 'getArgs', result
+		return result
+
+	# ........................................................................
+
+	about: (lArgs...) ->
+
+		dbgEnter 'about', lArgs
+		[lineNum, input, expected] = @getArgs(lArgs, 3)
 
 		@whichTest = 'about'
 		@whichAvaTest = 'truthy'
 		@test lineNum, (Math.abs(input - expected) <= epsilon)
+		dbgReturn 'about'
 		return
 
 	# ........................................................................
@@ -282,9 +326,37 @@ export class UnitTester
 
 	# ........................................................................
 
-	fails: (lineNum, func, expected) ->
+	succeeds: (lArgs...) ->
 
-		assert notdefined(expected), "UnitTester: fails doesn't allow expected"
+		if (lArgs.length == 1)
+			lineNum = @getCallerLineNum()
+			func = lArgs[0]
+		else if (lArgs.length == 2)
+			[lineNum, func] = lArgs
+
+		assert isFunction(func), "UnitTester: succeeds requires a function"
+
+		try
+			func()
+			ok = true
+		catch err
+			ok = false
+
+		@whichTest = 'succeeds'
+		@whichAvaTest = 'truthy'
+		@test lineNum, ok
+		return
+
+	# ........................................................................
+
+	fails: (lArgs...) ->
+
+		if (lArgs.length == 1)
+			lineNum = @getCallerLineNum()
+			func = lArgs[0]
+		else if (lArgs.length == 2)
+			[lineNum, func] = lArgs
+
 		assert isFunction(func), "UnitTester: fails requires a function"
 
 		# --- Turn off logging errors while checking for failure
@@ -299,24 +371,6 @@ export class UnitTester
 
 		@whichTest = 'fails'
 		@whichAvaTest = 'falsy'
-		@test lineNum, ok
-		return
-
-	# ........................................................................
-
-	succeeds: (lineNum, func, expected) ->
-
-		assert ! expected?, "UnitTester: succeeds doesn't allow expected"
-		assert isFunction(func), "UnitTester: succeeds requires a function"
-
-		try
-			func()
-			ok = true
-		catch err
-			ok = false
-
-		@whichTest = 'succeeds'
-		@whichAvaTest = 'truthy'
 		@test lineNum, ok
 		return
 

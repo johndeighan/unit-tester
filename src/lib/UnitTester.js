@@ -20,7 +20,8 @@ import {
   nonEmpty,
   removeKeys,
   DUMP,
-  OL
+  OL,
+  LOG
 } from '@jdeighan/base-utils';
 
 import {
@@ -76,9 +77,17 @@ export var setEpsilon = function(ep = 0.0001) {
 
 // ---------------------------------------------------------------------------
 export var UnitTester = class UnitTester {
-  constructor(source = undef) {
+  constructor(hOptions = {}) {
     var avaName, j, len, myName, ref, testDesc;
-    this.source = source;
+    this.hOptions = hOptions;
+    // --- Valid options:
+    //        source - will be printed in error messages
+    //        debug - turn on debugging
+    this.source = this.hOptions.source;
+    this.debug = this.hOptions.debug;
+    if (this.debug) {
+      LOG("DEBUGGING ON");
+    }
     this.whichAvaTest = 'deepEqual';
     this.whichTest = undef; // should be set by each test method
     this.label = 'unknown';
@@ -113,6 +122,9 @@ export var UnitTester = class UnitTester {
     var caller, doDebug, err, errMsg, expected, got, ident, input, j, lCallers, len, lineNum, stackTrace, testLineNum, whichAvaTest;
     dbgEnter('test', lArgs);
     dbg('whichTest', this.whichTest);
+    if (this.debug) {
+      LOG("whichTest = @whichTest");
+    }
     // --- NEW: lineNum can be omitted
     //          It's missing and must be calculated if
     //             @whichTest is 'truthy','falsy','succeeds' or 'fails'

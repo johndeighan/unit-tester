@@ -5,7 +5,7 @@ import test from 'ava'
 import {
 	undef, defined, notdefined, pass, oneof,
 	isString, isFunction, isNumber, isInteger,
-	isEmpty, nonEmpty, removeKeys, DUMP, OL,
+	isEmpty, nonEmpty, removeKeys, DUMP, OL, LOG,
 	} from '@jdeighan/base-utils'
 import {
 	assert, croak, haltOnError, suppressExceptionLogging,
@@ -49,7 +49,16 @@ export setEpsilon = (ep=0.0001) ->
 
 export class UnitTester
 
-	constructor: (@source=undef) ->
+	constructor: (@hOptions={}) ->
+		# --- Valid options:
+		#        source - will be printed in error messages
+		#        debug - turn on debugging
+
+		@source = @hOptions.source
+		@debug = @hOptions.debug
+
+		if @debug
+			LOG "DEBUGGING ON"
 
 		@whichAvaTest = 'deepEqual'
 		@whichTest = undef    # should be set by each test method
@@ -92,6 +101,9 @@ export class UnitTester
 
 		dbgEnter 'test', lArgs
 		dbg 'whichTest', @whichTest
+
+		if @debug
+			LOG "whichTest = @whichTest"
 
 		# --- NEW: lineNum can be omitted
 		#          It's missing and must be calculated if

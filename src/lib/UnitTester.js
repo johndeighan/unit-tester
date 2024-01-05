@@ -83,7 +83,7 @@ export var UnitTester = class UnitTester {
     //        source - will be printed in error messages
     //        debug - turn on debugging
     this.source = this.hOptions.source;
-    this.debug = this.hOptions.debug;
+    this.debug = !!this.hOptions.debug;
     if (this.debug) {
       LOG("DEBUGGING ON");
     }
@@ -491,5 +491,5 @@ export var mapInput = function(input, expected) {
 // ---------------------------------------------------------------------------
 export var utest = new UnitTester({
   source: 'unit test',
-  debug: true
+  debug: false
 });

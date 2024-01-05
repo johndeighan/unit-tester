@@ -55,7 +55,7 @@ export class UnitTester
 		#        debug - turn on debugging
 
 		@source = @hOptions.source
-		@debug = @hOptions.debug
+		@debug = !! @hOptions.debug
 
 		if @debug
 			LOG "DEBUGGING ON"
@@ -484,4 +484,4 @@ export mapInput =(input, expected) ->
 
 # ---------------------------------------------------------------------------
 
-export utest = new UnitTester({source: 'unit test', debug: true})
+export utest = new UnitTester({source: 'unit test', debug: false})

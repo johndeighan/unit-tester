@@ -52,103 +52,115 @@ utest.succeeds(23, function() {
   return 42;
 });
 
-utest.succeeds(25, function() {
-  return utest.truthy(9997, false);
+utest.fails(25, function() {
+  throw new Error('bad');
 });
 
 utest.succeeds(26, function() {
-  return utest.truthy(9998, true);
+  return 'abc';
 });
 
 utest.succeeds(27, function() {
-  return utest.falsy(9999, false);
+  return 42;
 });
 
 utest.truthy(29, true);
 
-utest.falsy(30, false);
+utest.truthy(30, 1);
+
+utest.truthy(31, 'abc');
+
+utest.truthy(32, ['abc']);
+
+utest.falsy(34, false);
+
+utest.falsy(35, 0);
+
+utest.falsy(36, '');
+
+utest.falsy(37, undef);
 
 (() => {
   var result;
   result = true;
-  return utest.truthy(34, result);
+  return utest.truthy(41, result);
 })();
 
 (() => {
   var result;
   result = false;
-  return utest.falsy(39, result);
+  return utest.falsy(46, result);
 })();
 
-utest.truthy(42, 99);
+utest.truthy(49, 99);
 
-utest.falsy(43, 0);
+utest.falsy(50, 0);
 
-utest.truthy(44, 'abc');
+utest.truthy(51, 'abc');
 
-utest.falsy(45, '');
+utest.falsy(52, '');
 
 // --- with nonorm
-nonorm.truthy(49, true);
+nonorm.truthy(56, true);
 
-nonorm.falsy(50, false);
+nonorm.falsy(57, false);
 
 (() => {
   var result;
   result = true;
-  return nonorm.truthy(54, result);
+  return nonorm.truthy(61, result);
 })();
 
 (() => {
   var result;
   result = false;
-  return nonorm.falsy(59, result);
+  return nonorm.falsy(66, result);
 })();
 
-nonorm.truthy(62, 99);
+nonorm.truthy(69, 99);
 
-nonorm.falsy(63, 0);
+nonorm.falsy(70, 0);
 
-nonorm.truthy(64, 'abc');
+nonorm.truthy(71, 'abc');
 
-nonorm.falsy(65, '');
+nonorm.falsy(72, '');
 
 // --- Normalization:
-norm.equal(68, "  abc   xyz   ", "abc xyz");
+norm.equal(75, "  abc   xyz   ", "abc xyz");
 
-nonorm.notequal(69, "  abc   xyz   ", "abc xyz");
+nonorm.notequal(76, "  abc   xyz   ", "abc xyz");
 
-nonorm.notequal(70, "  abc xyz   ", "abc xyz");
+nonorm.notequal(77, "  abc xyz   ", "abc xyz");
 
-nonorm.notequal(71, "abc   xyz", "abc xyz");
+nonorm.notequal(78, "abc   xyz", "abc xyz");
 
 // --- Duplicate line numbers are not a problem
-utest.truthy(74, 9999);
+utest.truthy(81, 9999);
 
 // ---------------------------------------------------------------------------
 // test like, unlike
-utest.like(79, {
+utest.like(86, {
   a: 1,
   b: 2
 }, {
   a: 1
 });
 
-utest.unlike(80, {
+utest.unlike(87, {
   a: 1,
   b: 2
 }, {
   c: 3
 });
 
-utest.unlike(81, {
+utest.unlike(88, {
   a: 1,
   b: 2
 }, {
   a: 2
 });
 
-utest.like(83, [
+utest.like(90, [
   {
     a: 1,
     b: 2
@@ -166,7 +178,7 @@ utest.like(83, [
   }
 ]);
 
-utest.unlike(84, [
+utest.unlike(91, [
   {
     a: 1,
     b: 2
@@ -180,7 +192,7 @@ utest.unlike(84, [
   }
 ]);
 
-utest.unlike(85, [
+utest.unlike(92, [
   {
     a: 1,
     b: 2
@@ -195,7 +207,7 @@ utest.unlike(85, [
   }
 ]);
 
-utest.unlike(86, [
+utest.unlike(93, [
   {
     a: 1,
     b: 2
@@ -213,7 +225,7 @@ utest.unlike(86, [
   }
 ]);
 
-utest.unlike(87, [
+utest.unlike(94, [
   {
     a: 1,
     b: 2
@@ -231,7 +243,7 @@ utest.unlike(87, [
   }
 ]);
 
-utest.like(89, {
+utest.like(96, {
   a: 1,
   b: 2
 }, {
@@ -239,14 +251,14 @@ utest.like(89, {
   b: 2
 });
 
-utest.like(90, {
+utest.like(97, {
   a: 1,
   b: 2
 }, {
   a: 1
 });
 
-utest.unlike(91, {
+utest.unlike(98, {
   a: 1
 }, {
   a: 1,
@@ -256,20 +268,20 @@ utest.unlike(91, {
 // ---------------------------------------------------------------------------
 
 // test defined, notdefined
-utest.defined(97, 23);
+utest.defined(104, 23);
 
-utest.defined(98, 'abc');
+utest.defined(105, 'abc');
 
-utest.notdefined(99, undef);
+utest.notdefined(106, undef);
 
-utest.notdefined(100, null);
+utest.notdefined(107, null);
 
 // ---------------------------------------------------------------------------
 
 // test about, notabout
-utest.about(106, 3.14159, 3.14158);
+utest.about(113, 3.14159, 3.14158);
 
-utest.notabout(107, 3.14159, 42);
+utest.notabout(114, 3.14159, 42);
 
 // ---------------------------------------------------------------------------
 // --- Create custom unit testers
@@ -283,8 +295,8 @@ utest.notabout(107, 3.14159, 42);
 
   };
   custom = new CustomTester();
-  custom.equal(119, 'abc', 'ABC');
-  return custom.equal(120, '  abc  ', 'ABC');
+  custom.equal(126, 'abc', 'ABC');
+  return custom.equal(127, '  abc  ', 'ABC');
 })();
 
 (function() {
@@ -297,8 +309,8 @@ utest.notabout(107, 3.14159, 42);
 
   };
   custom = new CustomTester();
-  custom.equal(130, 2, 6);
-  return custom.equal(131, 5, 15);
+  custom.equal(137, 2, 6);
+  return custom.equal(138, 5, 15);
 })();
 
 (function() {
@@ -316,7 +328,7 @@ utest.notabout(107, 3.14159, 42);
 
   };
   custom = new CustomTester();
-  return custom.equal(143, " 3.14159 ", "3.9");
+  return custom.equal(150, " 3.14159 ", "3.9");
 })();
 
 (function() {
@@ -337,7 +349,7 @@ utest.notabout(107, 3.14159, 42);
 
   };
   custom = new CustomTester();
-  return custom.equal(159, 'meaningOfLife', 42);
+  return custom.equal(166, 'meaningOfLife', 42);
 })();
 
 //# sourceMappingURL=UnitTester.test.js.map

@@ -91,7 +91,9 @@ export var UnitTester = class UnitTester {
     this.whichAvaTest = 'deepEqual';
     this.whichTest = undef; // should be set by each test method
     this.label = 'unknown';
-    ref = [['truthy', 'truthy'], ['falsy', 'falsy'], ['is', 'is'], ['not', 'not'], ['same', 'is'], ['different', 'not']];
+    ref = [['is', 'is'], ['not', 'not'], ['same', 'is'], ['different', 'not']];
+    //				['truthy', 'truthy']
+    //				['falsy', 'falsy']
     // --- We already have tests named:
     //        'equal', 'notequal', 'fails', 'succeeds'
     //     Add 4 more:
@@ -108,6 +110,20 @@ export var UnitTester = class UnitTester {
   // ........................................................................
   addTest(name, func) {
     this[name] = func;
+  }
+
+  // ........................................................................
+  truthy(lineNum, input) {
+    this.whichTest = 'truthy';
+    this.whichAvaTest = 'truthy';
+    this.test(lineNum, input);
+  }
+
+  // ........................................................................
+  falsy(lineNum, input) {
+    this.whichTest = 'falsy';
+    this.whichAvaTest = 'falsy';
+    this.test(lineNum, input);
   }
 
   // ........................................................................

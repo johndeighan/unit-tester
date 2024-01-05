@@ -68,8 +68,8 @@ export class UnitTester
 		#        'equal', 'notequal', 'fails', 'succeeds'
 		#     Add 4 more:
 		for testDesc in [
-				['truthy', 'truthy']
-				['falsy', 'falsy']
+#				['truthy', 'truthy']
+#				['falsy', 'falsy']
 				['is', 'is']
 				['not', 'not']
 				['same', 'is']
@@ -86,6 +86,24 @@ export class UnitTester
 	addTest: (name, func) ->
 
 		this[name] = func
+		return
+
+	# ........................................................................
+
+	truthy: (lineNum, input) ->
+
+		@whichTest = 'truthy'
+		@whichAvaTest = 'truthy'
+		@test lineNum, input
+		return
+
+	# ........................................................................
+
+	falsy: (lineNum, input) ->
+
+		@whichTest = 'falsy'
+		@whichAvaTest = 'falsy'
+		@test lineNum, input
 		return
 
 	# ........................................................................

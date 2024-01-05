@@ -78,7 +78,6 @@ export var setEpsilon = function(ep = 0.0001) {
 // ---------------------------------------------------------------------------
 export var UnitTester = class UnitTester {
   constructor(hOptions = {}) {
-    var avaName, j, len, myName, ref, testDesc;
     this.hOptions = hOptions;
     // --- Valid options:
     //        source - will be printed in error messages
@@ -91,42 +90,13 @@ export var UnitTester = class UnitTester {
     this.whichAvaTest = 'deepEqual';
     this.whichTest = undef; // should be set by each test method
     this.label = 'unknown';
-    ref = [['is', 'is'], ['not', 'not'], ['same', 'is'], ['different', 'not']];
-    //				['truthy', 'truthy']
-    //				['falsy', 'falsy']
-    // --- We already have tests named:
-    //        'equal', 'notequal', 'fails', 'succeeds'
-    //     Add 4 more:
-    for (j = 0, len = ref.length; j < len; j++) {
-      testDesc = ref[j];
-      [myName, avaName] = testDesc;
-      this.addTest(myName, function(...lArgs) {
-        this.whichAvaTest = avaName;
-        this.test(...lArgs);
-      });
-    }
   }
 
-  // ........................................................................
-  addTest(name, func) {
-    this[name] = func;
-  }
+  // --- We already have tests named:
+  //        'equal', 'notequal', 'fails', 'succeeds'
+  //     Add 4 more:
 
-  // ........................................................................
-  truthy(lineNum, input) {
-    this.whichTest = 'truthy';
-    this.whichAvaTest = 'truthy';
-    this.test(lineNum, input);
-  }
-
-  // ........................................................................
-  falsy(lineNum, input) {
-    this.whichTest = 'falsy';
-    this.whichAvaTest = 'falsy';
-    this.test(lineNum, input);
-  }
-
-  // ........................................................................
+    // ........................................................................
   getCallerLineNum() {
     var hNode;
     hNode = getMyOutsideCaller();
@@ -139,7 +109,7 @@ export var UnitTester = class UnitTester {
     dbgEnter('test', lArgs);
     dbg('whichTest', this.whichTest);
     if (this.debug) {
-      LOG("whichTest = @whichTest");
+      LOG(`whichTest = ${this.whichTest}`);
     }
     // --- NEW: lineNum can be omitted
     //          It's missing and must be calculated if
@@ -279,6 +249,48 @@ export var UnitTester = class UnitTester {
 
   // ........................................................................
   //          Tests
+  // ........................................................................
+  truthy(lineNum, input) {
+    this.whichTest = 'truthy';
+    this.whichAvaTest = 'truthy';
+    this.test(lineNum, input);
+  }
+
+  // ........................................................................
+  falsy(lineNum, input) {
+    this.whichTest = 'falsy';
+    this.whichAvaTest = 'falsy';
+    this.test(lineNum, input);
+  }
+
+  // ........................................................................
+  is(lineNum, input) {
+    this.whichTest = 'is';
+    this.whichAvaTest = 'is';
+    this.test(lineNum, input);
+  }
+
+  // ........................................................................
+  not(lineNum, input) {
+    this.whichTest = 'not';
+    this.whichAvaTest = 'not';
+    this.test(lineNum, input);
+  }
+
+  // ........................................................................
+  same(lineNum, input) {
+    this.whichTest = 'same';
+    this.whichAvaTest = 'is';
+    this.test(lineNum, input);
+  }
+
+  // ........................................................................
+  different(lineNum, input) {
+    this.whichTest = 'different';
+    this.whichAvaTest = 'not';
+    this.test(lineNum, input);
+  }
+
   // ........................................................................
   like(lineNum, input, expected) {
     this.whichTest = 'like';
@@ -477,4 +489,7 @@ export var mapInput = function(input, expected) {
 };
 
 // ---------------------------------------------------------------------------
-export var utest = new UnitTester();
+export var utest = new UnitTester({
+  source: 'unit test',
+  debug: true
+});

@@ -67,44 +67,6 @@ export class UnitTester
 		# --- We already have tests named:
 		#        'equal', 'notequal', 'fails', 'succeeds'
 		#     Add 4 more:
-		for testDesc in [
-#				['truthy', 'truthy']
-#				['falsy', 'falsy']
-				['is', 'is']
-				['not', 'not']
-				['same', 'is']
-				['different', 'not']
-				]
-			[myName, avaName] = testDesc
-			@addTest myName, (lArgs...) ->
-				@whichAvaTest = avaName
-				@test lArgs...
-				return
-
-	# ........................................................................
-
-	addTest: (name, func) ->
-
-		this[name] = func
-		return
-
-	# ........................................................................
-
-	truthy: (lineNum, input) ->
-
-		@whichTest = 'truthy'
-		@whichAvaTest = 'truthy'
-		@test lineNum, input
-		return
-
-	# ........................................................................
-
-	falsy: (lineNum, input) ->
-
-		@whichTest = 'falsy'
-		@whichAvaTest = 'falsy'
-		@test lineNum, input
-		return
 
 	# ........................................................................
 
@@ -121,7 +83,7 @@ export class UnitTester
 		dbg 'whichTest', @whichTest
 
 		if @debug
-			LOG "whichTest = @whichTest"
+			LOG "whichTest = #{@whichTest}"
 
 		# --- NEW: lineNum can be omitted
 		#          It's missing and must be calculated if
@@ -259,6 +221,60 @@ export class UnitTester
 
 	# ........................................................................
 	#          Tests
+	# ........................................................................
+
+	truthy: (lineNum, input) ->
+
+		@whichTest = 'truthy'
+		@whichAvaTest = 'truthy'
+		@test lineNum, input
+		return
+
+	# ........................................................................
+
+	falsy: (lineNum, input) ->
+
+		@whichTest = 'falsy'
+		@whichAvaTest = 'falsy'
+		@test lineNum, input
+		return
+
+	# ........................................................................
+
+	is: (lineNum, input) ->
+
+		@whichTest = 'is'
+		@whichAvaTest = 'is'
+		@test lineNum, input
+		return
+
+	# ........................................................................
+
+	not: (lineNum, input) ->
+
+		@whichTest = 'not'
+		@whichAvaTest = 'not'
+		@test lineNum, input
+		return
+
+	# ........................................................................
+
+	same: (lineNum, input) ->
+
+		@whichTest = 'same'
+		@whichAvaTest = 'is'
+		@test lineNum, input
+		return
+
+	# ........................................................................
+
+	different: (lineNum, input) ->
+
+		@whichTest = 'different'
+		@whichAvaTest = 'not'
+		@test lineNum, input
+		return
+
 	# ........................................................................
 
 	like: (lineNum, input, expected) ->
@@ -468,4 +484,4 @@ export mapInput =(input, expected) ->
 
 # ---------------------------------------------------------------------------
 
-export utest = new UnitTester()
+export utest = new UnitTester({source: 'unit test', debug: true})

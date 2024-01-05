@@ -36,82 +36,86 @@ utest.falsy 35, 0
 utest.falsy 36, ''
 utest.falsy 37, undef
 
+lAllWords = [{en: 'a'}, {en: 'b'}, {en: 'c'}]
+utest.truthy 40, (lAllWords.length == 3)
+utest.falsy  41, (lAllWords.length == 2)
+
 (() =>
 	result = true
-	utest.truthy 41, result
+	utest.truthy 45, result
 	)()
 
 (() =>
 	result = false
-	utest.falsy 46, result
+	utest.falsy 50, result
 	)()
 
-utest.truthy 49, 99
-utest.falsy 50, 0
-utest.truthy 51, 'abc'
-utest.falsy 52, ''
+utest.truthy 53, 99
+utest.falsy 54, 0
+utest.truthy 55, 'abc'
+utest.falsy 56, ''
 
 # --- with nonorm
 
-nonorm.truthy 56, true
-nonorm.falsy 57, false
+nonorm.truthy 60, true
+nonorm.falsy 61, false
 
 (() =>
 	result = true
-	nonorm.truthy 61, result
+	nonorm.truthy 65, result
 	)()
 
 (() =>
 	result = false
-	nonorm.falsy 66, result
+	nonorm.falsy 70, result
 	)()
 
-nonorm.truthy 69, 99
-nonorm.falsy 70, 0
-nonorm.truthy 71, 'abc'
-nonorm.falsy 72, ''
+nonorm.truthy 73, 99
+nonorm.falsy 74, 0
+nonorm.truthy 75, 'abc'
+nonorm.falsy 76, ''
 
 # --- Normalization:
-norm.equal 75, "  abc   xyz   ", "abc xyz"
-nonorm.notequal 76, "  abc   xyz   ", "abc xyz"
-nonorm.notequal 77, "  abc xyz   ", "abc xyz"
-nonorm.notequal 78, "abc   xyz", "abc xyz"
+norm.equal 79, "  abc   xyz   ", "abc xyz"
+nonorm.notequal 80, "  abc   xyz   ", "abc xyz"
+nonorm.notequal 81, "  abc xyz   ", "abc xyz"
+nonorm.notequal 82, "abc   xyz", "abc xyz"
 
 # --- Duplicate line numbers are not a problem
-utest.truthy 81, 9999
+utest.truthy 85, 9999
 
 # ---------------------------------------------------------------------------
 # test like, unlike
 
-utest.like 86, {a:1, b:2}, {a:1}
-utest.unlike 87, {a:1, b:2}, {c:3}
-utest.unlike 88, {a:1, b:2}, {a:2}
+utest.like 90, {a:1, b:2}, {a:1}
+utest.unlike 91, {a:1, b:2}, {c:3}
+utest.unlike 92, {a:1, b:2}, {a:2}
 
-utest.like 90, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:3}]
-utest.unlike 91, [{a:1, b:2}], [{a:1}, {a:3}]
-utest.unlike 92, [{a:1, b:2}, {a:3, c:5}], [{a:1}]
-utest.unlike 93, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:4}]
-utest.unlike 94, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {b:3}]
+utest.like 94, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:3}]
+utest.unlike 95, [{a:1, b:2}], [{a:1}, {a:3}]
+utest.unlike 96, [{a:1, b:2}, {a:3, c:5}], [{a:1}]
+utest.unlike 97, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {a:4}]
+utest.unlike 98, [{a:1, b:2}, {a:3, c:5}], [{a:1}, {b:3}]
 
-utest.like 96, {a:1, b:2}, {a:1, b:2}
-utest.like 97, {a:1, b:2}, {a:1}
-utest.unlike 98, {a:1}, {a:1, b:2}
+utest.like 100, {a:1, b:2}, {a:1, b:2}
+utest.like 101, {a:1, b:2}, {a:1}
+utest.unlike 102, {a:1}, {a:1, b:2}
 
 # ---------------------------------------------------------------------------
 
 # test defined, notdefined
 
-utest.defined 104, 23
-utest.defined 105, 'abc'
-utest.notdefined 106, undef
-utest.notdefined 107, null
+utest.defined 108, 23
+utest.defined 109, 'abc'
+utest.notdefined 110, undef
+utest.notdefined 111, null
 
 # ---------------------------------------------------------------------------
 
 # test about, notabout
 
-utest.about 113, 3.14159, 3.14158
-utest.notabout 114, 3.14159, 42
+utest.about 117, 3.14159, 3.14158
+utest.notabout 118, 3.14159, 42
 
 # ---------------------------------------------------------------------------
 # --- Create custom unit testers
@@ -123,8 +127,8 @@ utest.notabout 114, 3.14159, 42
 		transformValue: (input) -> return input.toUpperCase()
 
 	custom = new CustomTester()
-	custom.equal 126, 'abc', 'ABC'
-	custom.equal 127, '  abc  ', 'ABC'
+	custom.equal 130, 'abc', 'ABC'
+	custom.equal 131, '  abc  ', 'ABC'
 	)()
 
 (() ->
@@ -134,8 +138,8 @@ utest.notabout 114, 3.14159, 42
 		transformValue: (input) -> return 3 * input
 
 	custom = new CustomTester()
-	custom.equal 137, 2, 6
-	custom.equal 138, 5, 15
+	custom.equal 141, 2, 6
+	custom.equal 142, 5, 15
 	)()
 
 (() ->
@@ -147,7 +151,7 @@ utest.notabout 114, 3.14159, 42
 		transformExpected: (str) -> return Math.floor(parseFloat(str))
 
 	custom = new CustomTester()
-	custom.equal 150, " 3.14159 ", "3.9"
+	custom.equal 154, " 3.14159 ", "3.9"
 	)()
 
 (() ->
@@ -163,5 +167,5 @@ utest.notabout 114, 3.14159, 42
 		transformValue: (str) -> return @h[str]
 
 	custom = new CustomTester()
-	custom.equal 166, 'meaningOfLife', 42
+	custom.equal 170, 'meaningOfLife', 42
 	)()
